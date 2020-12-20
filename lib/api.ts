@@ -12,9 +12,19 @@ export async function fetchAPI(endpoint: string) {
     headers,
   });
 
+  const options = {
+    attributeNamePrefix: "",
+    ignoreAttributes: false,
+    attrNodeName: "attr", //default is 'false'
+    textNodeName: "text",
+    // ignoreNameSpace : false,
+    // allowBooleanAttributes : false,
+    // parseNodeValue : true,
+    // parseAttributeValue : false,
+  };
   try {
     const text = await res.text();
-    return parser.parse(text);
+    return parser.parse(text, options);
   } catch (e) {
     throw new Error(e);
   }

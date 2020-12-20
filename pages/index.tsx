@@ -1,28 +1,71 @@
 import { fetchAPI } from "lib/api";
-import { Box, Card, Grid, Heading, Image } from "theme-ui";
+import { Box, Card, Grid, Heading, Image, Text } from "theme-ui";
 
 type Item = {
   image: string;
-  name: string;
+  name: { text: string };
   numplays: number;
   originalname: string;
   status: string;
   thumbnail: string;
   yearpublished: number;
+  attr: Record<string, string>;
+  stats: {
+    attr: {
+      minplayers: string;
+      maxplayers: string;
+      minplaytime: string;
+      maxplaytime: string;
+      playingtime: string;
+      numowned: string;
+    };
+    rating: {
+      attr: {
+        value: string;
+      };
+      usersrated: {
+        attr: {
+          value: string;
+        };
+      };
+      average: {
+        attr: {
+          value: string;
+        };
+      };
+    };
+  };
 };
+
+const Stats = ({
+  attr: { minplayers, maxplayers, playingtime },
+  rating,
+}: Pick<Item["stats"], "attr" | "rating">) => (
+  <>
+    <Text>
+      Players: {minplayers}
+      {maxplayers !== minplayers ? ` .. ${maxplayers}` : ""}
+    </Text>
+    <Text>Playtime: {playingtime} min</Text>
+    <Text>Bgg Rating: {Number(rating.average.attr.value).toFixed(1)}</Text>
+    <Text>My Rating: {rating.attr.value}</Text>
+  </>
+);
 
 const Home = ({
   data,
 }: {
   data: { items?: { item: Item[] }; error?: any };
 }) => {
-  data?.error && console.error(data?.error);
+  console.log(data);
   return (
     <Box>
-      <Heading as="h1">My Collection</Heading>
-      <Grid columns="1fr 1fr 1fr 1fr 1fr">
+      <Heading as="h1" my={3}>
+        My Collection
+      </Heading>
+      <Grid columns={["auto", "1fr 1fr 1fr", "1fr 1fr 1fr 1fr 1fr"]}>
         {data?.items?.item?.map((item) => (
-          <Card key={item.name}>
+          <Card key={item.attr.objectid}>
             <Box
               sx={{
                 position: "relative",
@@ -40,13 +83,13 @@ const Home = ({
                   verticalAlign: "bottom",
                 }}
                 src={item.image}
-                alt={item.name}
+                alt={item.name.text}
               />
             </Box>
-
-            <Heading as="h3">
-              {item.name}
+            <Heading as="h3" mt={2}>
+              {item.name.text}
             </Heading>
+            <Stats {...item.stats} />
           </Card>
         ))}
       </Grid>
@@ -57,8 +100,10 @@ const Home = ({
 export default Home;
 
 export async function getStaticProps() {
-  const data = await fetchAPI("collection?username=denb&subtype=boardgame");
-  console.info("homepage done", data);
+  const data = await fetchAPI(
+    "collection?username=denb&subtype=boardgame&stats=1"
+  );
+
   return {
     props: {
       data,
