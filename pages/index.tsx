@@ -57,12 +57,12 @@ const Home = ({
 }: {
   data: { items?: { item: Item[] }; error?: any };
 }) => {
-  console.log(data);
   return (
     <Box>
       <Heading as="h1" my={3}>
         My Collection
       </Heading>
+      {!data?.items?.item && 'You might need a page refresh in order to see the content'}
       <Grid columns={["auto", "1fr 1fr 1fr", "1fr 1fr 1fr 1fr 1fr"]}>
         {data?.items?.item?.map((item) => (
           <Card key={item.attr.objectid}>
