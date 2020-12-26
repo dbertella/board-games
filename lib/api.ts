@@ -17,10 +17,6 @@ export async function fetchAPI(endpoint: string) {
     ignoreAttributes: false,
     attrNodeName: "attr", //default is 'false'
     textNodeName: "text",
-    // ignoreNameSpace : false,
-    // allowBooleanAttributes : false,
-    // parseNodeValue : true,
-    // parseAttributeValue : false,
   };
   try {
     const text = await res.text();
