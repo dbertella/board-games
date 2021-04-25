@@ -1,68 +1,34 @@
-import { fetchAPI } from "lib/api";
-import { Box, Card, Grid, Heading, Image, Text } from "theme-ui";
-
-type Item = {
-  image: string;
-  name: { text: string };
-  numplays: number;
-  originalname: string;
-  status: string;
-  thumbnail: string;
-  yearpublished: number;
-  attr: Record<string, string>;
-  stats: {
-    attr: {
-      minplayers: string;
-      maxplayers: string;
-      minplaytime: string;
-      maxplaytime: string;
-      playingtime: string;
-      numowned: string;
-    };
-    rating: {
-      attr: {
-        value: string;
-      };
-      usersrated: {
-        attr: {
-          value: string;
-        };
-      };
-      average: {
-        attr: {
-          value: string;
-        };
-      };
-    };
-  };
-};
+import { fetchAPI } from "../lib/api";
+import { Box, Card, Grid, Heading, Image, Link, Text } from "theme-ui";
+import { BggGame } from "../types/bgg";
 
 const Stats = ({
   attr: { minplayers, maxplayers, playingtime },
   rating,
-}: Pick<Item["stats"], "attr" | "rating">) => (
+}: Pick<BggGame["stats"], "attr" | "rating">) => (
   <>
-    <Text>
+    <Text as="p">
       Players: {minplayers}
       {maxplayers !== minplayers ? ` .. ${maxplayers}` : ""}
     </Text>
-    <Text>Playtime: {playingtime} min</Text>
-    <Text>Bgg Rating: {Number(rating.average.attr.value).toFixed(1)}</Text>
-    <Text>My Rating: {rating.attr.value}</Text>
+    <Text as="p">Playtime: {playingtime} min</Text>
+    <Text as="p">Bgg Rating: {Number(rating.average.attr.value).toFixed(1)}</Text>
+    <Text as="p">My Rating: {rating.attr.value}</Text>
   </>
 );
 
 const Home = ({
   data,
 }: {
-  data: { items?: { item: Item[] }; error?: any };
+  data: { items?: { item: BggGame[] }; error?: any };
 }) => {
   return (
     <Box>
       <Heading as="h1" my={3}>
         My Collection
       </Heading>
-      {!data?.items?.item && 'You might need a page refresh in order to see the content'}
+      {!data?.items?.item &&
+        "You might need a page refresh in order to see the content"}
       <Grid columns={["auto", "1fr 1fr 1fr", "1fr 1fr 1fr 1fr 1fr"]}>
         {data?.items?.item?.map((item) => (
           <Card key={item.attr.objectid}>
@@ -74,17 +40,21 @@ const Home = ({
                 padding: "5%",
               }}
             >
-              <Image
-                sx={{
-                  position: "absolute",
-                  height: "90%",
-                  width: "90%",
-                  objectFit: "contain",
-                  verticalAlign: "bottom",
-                }}
-                src={item.image}
-                alt={item.name.text}
-              />
+              <Link
+                href={`https://boardgamegeek.com/boardgame/${item.attr.objectid}`}
+              >
+                <Image
+                  sx={{
+                    position: "absolute",
+                    height: "90%",
+                    width: "90%",
+                    objectFit: "contain",
+                    verticalAlign: "bottom",
+                  }}
+                  src={item.image}
+                  alt={item.name.text}
+                />
+              </Link>
             </Box>
             <Heading as="h3" mt={2}>
               {item.name.text}
