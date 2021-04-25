@@ -1,4 +1,4 @@
-import Intro from "../components/intro";
+import Intro from "../components/introcomponent";
 import Layout from "../components/layout";
 import { getAllGames } from "../lib/games";
 import Head from "next/head";
