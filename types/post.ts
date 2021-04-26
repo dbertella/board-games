@@ -1,3 +1,5 @@
+import { BggGameSingle } from "./bgg";
+
 type PostType = {
   slug: string;
   title: string;
@@ -7,6 +9,7 @@ type PostType = {
   excerpt: string;
   ogImage: string;
   content: string;
+  item: BggGameSingle;
 };
 
 export default PostType;

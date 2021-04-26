@@ -3,7 +3,7 @@ import Head from "next/head";
 export default function Meta() {
   return (
     <Head>
-      <link
+      {/* <link
         rel="icon"
         href="/favicon-32x32.png?v=8bf389f29981e2432d22da0c263eb828"
         type="image/png"
@@ -53,14 +53,14 @@ export default function Meta() {
         rel="apple-touch-icon"
         sizes="512x512"
         href="/icons/icon-512x512.png?v=8bf389f29981e2432d22da0c263eb828"
-      />
+      /> */}
       <meta name="description" content="🎲 Daniele's Boardgames 🎲" />
 
-      <meta
+      {/* <meta
         property="og:image"
         content="/images/logo-rampina.jpg"
         key="feature-image"
-      />
+      /> */}
     </Head>
   );
 }

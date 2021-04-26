@@ -6,10 +6,12 @@ import { getGameBySlug, getAllGames } from "../../lib/games";
 import Head from "next/head";
 import markdownToHtml from "../../lib/markdownToHtml";
 import PostType from "../../types/post";
-import Header from "../../components/header";
 import PostTitle from "../../components/post-title";
 import PostHeader from "../../components/post-header";
 import { fetchAPI } from "../../lib/api";
+import he from "he";
+import { Themed } from "@theme-ui/mdx";
+import { Stats } from "../../components/game-stats";
 
 type Props = {
   post: PostType;
@@ -24,7 +26,6 @@ const Post = ({ post }: Props) => {
   }
   return (
     <Layout>
-      <Header />
       {router.isFallback ? (
         <PostTitle>Loading…</PostTitle>
       ) : (
@@ -40,6 +41,10 @@ const Post = ({ post }: Props) => {
               date={post.date}
             />
             <PostBody content={post.content} />
+            <Themed.h2>From BGG</Themed.h2>
+            <Stats {...post.item} />
+            <Themed.h3>Description</Themed.h3>
+            {he.decode(he.decode(post.item.description))}
           </article>
         </>
       )}
@@ -67,7 +72,7 @@ export async function getStaticProps({ params }: Params) {
   ]);
   const content = await markdownToHtml(post.content || "");
 
-  const data = await fetchAPI(`thing?id=${post.bggId}`);
+  const data = await fetchAPI(`thing?id=${post.bggId}&stats=1`);
 
   const ogImage = post.ogImage ?? data.items.item.image;
   const coverImage = post.coverImage ?? data.items.item.image;
@@ -78,7 +83,7 @@ export async function getStaticProps({ params }: Params) {
         content,
         ogImage,
         coverImage,
-        ...data,
+        ...data.items,
       },
     },
   };

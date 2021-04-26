@@ -1,23 +1,7 @@
 import { fetchAPI } from "../lib/api";
-import { Box, Card, Grid, Heading, Image, Link, Text } from "theme-ui";
+import { Box, Card, Grid, Heading, Image, Link } from "theme-ui";
 import { BggGame } from "../types/bgg";
-
-const Stats = ({
-  attr: { minplayers, maxplayers, playingtime },
-  rating,
-}: Pick<BggGame["stats"], "attr" | "rating">) => (
-  <>
-    <Text as="p">
-      Players: {minplayers}
-      {maxplayers !== minplayers ? ` .. ${maxplayers}` : ""}
-    </Text>
-    <Text as="p">Playtime: {playingtime} min</Text>
-    <Text as="p">
-      Bgg Rating: {Number(rating.average.attr.value).toFixed(1)}
-    </Text>
-    <Text as="p">My Rating: {rating.attr.value}</Text>
-  </>
-);
+import { Stats } from "../components/stats";
 
 const GameList = ({ items }: { items: { item: BggGame[] } }) => (
   <Grid columns={["auto", "1fr 1fr 1fr", "1fr 1fr 1fr 1fr 1fr"]}>
@@ -86,11 +70,20 @@ const Home = ({
 export default Home;
 
 export async function getStaticProps() {
+  const collectionOptions = {
+    attributeNamePrefix: "",
+    ignoreAttributes: false,
+    attrNodeName: "attr", //default is 'false'
+    textNodeName: "text",
+  };
+
   const data = await fetchAPI(
-    "collection?username=denb&subtype=boardgame&stats=1&own=1"
+    "collection?username=denb&subtype=boardgame&stats=1&own=1",
+    collectionOptions
   );
   const wishlist = await fetchAPI(
-    "collection?username=denb&subtype=boardgame&stats=1&own=0"
+    "collection?username=denb&subtype=boardgame&stats=1&own=0",
+    collectionOptions
   );
 
   return {

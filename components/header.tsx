@@ -5,7 +5,7 @@ const Header = () => {
   return (
     <Themed.h2>
       <Link href="/">
-        <a>Blog</a>
+        <a>Collection</a>
       </Link>
       .
     </Themed.h2>

@@ -2,7 +2,13 @@
 const API_URL = "https://www.boardgamegeek.com/xmlapi2/";
 var parser = require("fast-xml-parser");
 
-export async function fetchAPI(endpoint: string) {
+const defaultOptions = {
+  attributeNamePrefix: "",
+  ignoreAttributes: false,
+  textNodeName: "text",
+};
+
+export async function fetchAPI(endpoint: string, options = defaultOptions) {
   const headers = {
     // "Content-Type": "application/json"
   };
@@ -12,12 +18,6 @@ export async function fetchAPI(endpoint: string) {
     headers,
   });
 
-  const options = {
-    attributeNamePrefix: "",
-    ignoreAttributes: false,
-    attrNodeName: "attr", //default is 'false'
-    textNodeName: "text",
-  };
   try {
     const text = await res.text();
     return parser.parse(text, options);
