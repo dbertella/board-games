@@ -11,7 +11,6 @@ export default function PostHeader({ title, coverImage }: Props) {
   return (
     <>
       <Back />
-      <PostTitle sx={{ mb: 1 }}>{title}</PostTitle>
       <Flex
         sx={{
           fontSize: 0,
@@ -21,6 +20,7 @@ export default function PostHeader({ title, coverImage }: Props) {
       >
         <Image src={coverImage} sx={{ maxWidth: 500, width: "100%" }} />
       </Flex>
+      <PostTitle sx={{ mb: 1 }}>{title}</PostTitle>
     </>
   );
 }

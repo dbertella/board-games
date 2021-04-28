@@ -1,10 +1,19 @@
 import { Box } from "@theme-ui/components";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { FiArrowLeft } from "react-icons/fi";
 
 const BackButton = () => {
+  const router = useRouter();
+  const { order } = router.query;
   return (
-    <Link href="/" passHref>
+    <Link
+      href={{
+        pathname: `/`,
+        query: { order },
+      }}
+      passHref
+    >
       <Box>
         <FiArrowLeft size={32} />
       </Box>
