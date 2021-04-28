@@ -8,6 +8,7 @@ type PostType = {
   thumbnail: string;
   excerpt: string;
   ogImage: string;
+  rating: string;
   content: string;
   item: BggGameSingle;
 };

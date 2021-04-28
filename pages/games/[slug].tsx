@@ -12,6 +12,8 @@ import { fetchAPI } from "../../lib/api";
 import he from "he";
 import { Themed } from "@theme-ui/mdx";
 import { Stats } from "../../components/game-stats";
+import GameDate from "../../components/game-date";
+import GameRating from "../../components/game-rating";
 
 type Props = {
   post: PostType;
@@ -35,11 +37,9 @@ const Post = ({ post }: Props) => {
               <title>{post.title} | Daniele Bertella</title>
               <meta property="og:image" content={post.ogImage} />
             </Head>
-            <PostHeader
-              title={post.title}
-              coverImage={post.coverImage}
-              date={post.date}
-            />
+            <PostHeader title={post.title} coverImage={post.coverImage} />
+            <GameDate dateString={post.date} />
+            <GameRating rating={post.rating} />
             <PostBody content={post.content} />
             <Themed.h2>From BGG</Themed.h2>
             <Stats {...post.item} />
@@ -69,6 +69,7 @@ export async function getStaticProps({ params }: Params) {
     "ogImage",
     "coverImage",
     "bggId",
+    "rating",
   ]);
   const content = await markdownToHtml(post.content || "");
 

@@ -4,7 +4,7 @@ import { FiArrowLeft } from "react-icons/fi";
 
 const BackButton = () => {
   return (
-    <Link href="/list" passHref>
+    <Link href="/" passHref>
       <Box>
         <FiArrowLeft size={32} />
       </Box>

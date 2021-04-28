@@ -2,6 +2,7 @@ import CookieConsent from "react-cookie-consent";
 import Footer from "./footer";
 import Meta from "./meta";
 import { FC } from "react";
+import { Box } from "@theme-ui/components";
 
 const Layout: FC = ({ children }) => {
   return (
@@ -10,7 +11,9 @@ const Layout: FC = ({ children }) => {
         This website uses cookies to enhance the user experience.
       </CookieConsent>
       <Meta />
-      <main>{children}</main>
+      <Box as="main" sx={{ px: 1 }}>
+        {children}
+      </Box>
       <Footer />
     </>
   );

@@ -14,7 +14,7 @@ export const Stats = ({
     </Text>
     <Text as="p">Playtime: {playingtime.value} min</Text>
     <Text as="p">
-      Avg Rating: {Number(statistics.ratings.average.value).toFixed(1)}
+      Bgg Rating: {Number(statistics.ratings.average.value).toFixed(1)}
     </Text>
   </>
 );
