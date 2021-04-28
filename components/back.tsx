@@ -10,7 +10,7 @@ const BackButton = () => {
     <Link
       href={{
         pathname: `/`,
-        query: { order },
+        query: { ...(order ? { order } : {}) },
       }}
       passHref
     >

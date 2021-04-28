@@ -1,4 +1,7 @@
+/** @jsxImportSource theme-ui */
+
 import { useRouter } from "next/router";
+import Clamp from "react-clamp-lines";
 import ErrorPage from "next/error";
 import PostBody from "../../components/post-body";
 import Layout from "../../components/layout";
@@ -14,6 +17,8 @@ import { Themed } from "@theme-ui/mdx";
 import { Stats } from "../../components/game-stats";
 import GameDate from "../../components/game-date";
 import GameRating from "../../components/game-rating";
+import { Flex, Heading, Link } from "@theme-ui/components";
+import { FiLink } from "react-icons/fi";
 
 type Props = {
   post: PostType;
@@ -43,8 +48,27 @@ const Post = ({ post }: Props) => {
             <PostBody content={post.content} />
             <Themed.h2>From BGG</Themed.h2>
             <Stats {...post.item} />
-            <Themed.h3>Description</Themed.h3>
-            {he.decode(he.decode(post.item.description))}
+            <Flex
+              sx={{
+                justifyContent: "space-between",
+                alignItems: "center",
+                mt: 3,
+              }}
+            >
+              <Heading as="h3">Description</Heading>
+              <Link
+                href={`https://boardgamegeek.com/boardgame/${post.item.id}`}
+                sx={{ mb: 2 }}
+              >
+                Source
+                <FiLink sx={{ ml: 1 }} size={14} />
+              </Link>
+            </Flex>
+            <Clamp
+              id="game-description"
+              text={he.decode(he.decode(post.item.description))}
+              lines={4}
+            />
           </article>
         </>
       )}

@@ -22,7 +22,6 @@ import { Stats } from "components/game-stats";
 import GameDate from "components/game-date";
 import GameRating from "components/game-rating";
 import { orderBy } from "lodash";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 type Props = {
@@ -32,14 +31,10 @@ type Props = {
 const Index = ({ allPosts }: Props) => {
   const router = useRouter();
   const { order } = router.query;
-
-  const [orderedBy, setOrderedBy] = useState(order ?? "date");
-  const orderedGames = orderBy(allPosts, orderedBy, [
-    orderedBy === "title" ? "asc" : "desc",
+  
+  const orderedGames = orderBy(allPosts, order, [
+    order === "title" ? "asc" : "desc",
   ]);
-  useEffect(() => {
-    router.push({ query: { order: orderedBy } });
-  }, [orderedBy]);
   return (
     <>
       <Layout>
@@ -76,8 +71,10 @@ const Index = ({ allPosts }: Props) => {
                 <path d="M7.41 7.84l4.59 4.58 4.59-4.58 1.41 1.41-6 6-6-6z" />
               </svg>
             }
-            value={orderedBy}
-            onChange={({ target }) => setOrderedBy(target.value)}
+            value={order}
+            onChange={({ target }) =>
+              router.push({ query: { order: target.value } })
+            }
           >
             <option value="date">Purchased Date</option>
             <option value="rating">Rating</option>
@@ -89,7 +86,7 @@ const Index = ({ allPosts }: Props) => {
             <Link
               href={{
                 pathname: `/games/${p.slug}`,
-                query: { order: orderedBy },
+                query: { ...(order ? { order } : {}) },
               }}
               key={p.slug}
               passHref

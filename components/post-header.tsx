@@ -18,7 +18,10 @@ export default function PostHeader({ title, coverImage }: Props) {
           justifyContent: "center",
         }}
       >
-        <Image src={coverImage} sx={{ maxWidth: 500, width: "100%" }} />
+        <Image
+          src={coverImage}
+          sx={{ maxWidth: 500, width: "100%", height: "auto" }}
+        />
       </Flex>
       <PostTitle sx={{ mb: 1 }}>{title}</PostTitle>
     </>
