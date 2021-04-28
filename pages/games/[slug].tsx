@@ -74,6 +74,10 @@ export async function getStaticProps({ params }: Params) {
 
   const data = await fetchAPI(`thing?id=${post.bggId}&stats=1`);
 
+  const title =
+    post.title ??
+    data.items.item.name?.[0]?.value ??
+    data.items.item.name.value;
   const ogImage = post.ogImage ?? data.items.item.image;
   const coverImage = post.coverImage ?? data.items.item.image;
   return {
@@ -83,6 +87,7 @@ export async function getStaticProps({ params }: Params) {
         content,
         ogImage,
         coverImage,
+        title,
         ...data.items,
       },
     },

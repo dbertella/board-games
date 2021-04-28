@@ -1,7 +1,7 @@
 ---
-title: "BANG!"
 excerpt: ""
 bggId: 3955
+date: '2010-09-01'
 ---
 
 This is probably the first game in my collection. It was back in 2010. With a friend I was hitchiking in the US and a man offered us a ride.

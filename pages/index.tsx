@@ -47,6 +47,7 @@ const Home = ({
   data: { items?: { item: BggGame[] }; error?: any };
   wishlist: { items?: { item: BggGame[] }; error?: any };
 }) => {
+  console.log(data)
   return (
     <Box>
       <Heading as="h1" my={3}>

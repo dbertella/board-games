@@ -1,6 +1,7 @@
 import { Box, Image } from "theme-ui";
 import PostTitle from "./post-title";
 import Date from "./date-formatter";
+import Back from "./back";
 
 type Props = {
   title: string;
@@ -11,11 +12,11 @@ type Props = {
 export default function PostHeader({ title, coverImage, date }: Props) {
   return (
     <>
+      <Back />
       <PostTitle sx={{ mb: 1 }}>{title}</PostTitle>
       <Box
         sx={{
           fontSize: 0,
-          color: "muted",
           mb: 1,
         }}
       >
