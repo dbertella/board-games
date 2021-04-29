@@ -49,8 +49,9 @@ const Post = ({ post }: Props) => {
               sx={{
                 position: "relative",
                 bg: "muted",
-                padding: 3,
+                p: 3,
                 borderRadius: 15,
+                mt: 3,
               }}
             >
               <Flex
