@@ -13,11 +13,10 @@ import PostTitle from "../../components/post-title";
 import PostHeader from "../../components/post-header";
 import { fetchAPI } from "../../lib/api";
 import he from "he";
-import { Themed } from "@theme-ui/mdx";
 import { Stats } from "../../components/game-stats";
 import GameDate from "../../components/game-date";
 import GameRating from "../../components/game-rating";
-import { Flex, Heading, Link } from "@theme-ui/components";
+import { Flex, Box, Heading, Link } from "@theme-ui/components";
 import { FiLink } from "react-icons/fi";
 
 type Props = {
@@ -46,29 +45,41 @@ const Post = ({ post }: Props) => {
             <GameDate dateString={post.date} />
             <GameRating rating={post.rating} />
             <PostBody content={post.content} />
-            <Themed.h2>From BGG</Themed.h2>
-            <Stats {...post.item} />
-            <Flex
+            <Box
               sx={{
-                justifyContent: "space-between",
-                alignItems: "center",
-                mt: 3,
+                position: "relative",
+                bg: "muted",
+                padding: 3,
+                borderRadius: 15,
               }}
             >
-              <Heading as="h3">Description</Heading>
-              <Link
-                href={`https://boardgamegeek.com/boardgame/${post.item.id}`}
-                sx={{ mb: 2 }}
+              <Flex
+                sx={{
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mb: 2,
+                }}
               >
-                Source
-                <FiLink sx={{ ml: 1 }} size={14} />
-              </Link>
-            </Flex>
-            <Clamp
-              id="game-description"
-              text={he.decode(he.decode(post.item.description))}
-              lines={4}
-            />
+                <Heading as="h2">From BGG</Heading>
+                <Link
+                  href={`https://boardgamegeek.com/boardgame/${post.item.id}`}
+                  sx={{ mb: 3 }}
+                >
+                  Source
+                  <FiLink sx={{ ml: 1 }} size={14} />
+                </Link>
+              </Flex>
+              <Stats {...post.item} />
+              <Heading as="h3" sx={{ my: 3 }}>
+                Description
+              </Heading>
+
+              <Clamp
+                id="game-description"
+                text={he.decode(he.decode(post.item.description))}
+                lines={4}
+              />
+            </Box>
           </article>
         </>
       )}

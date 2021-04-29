@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 
 import he from "he";
-import Intro from "../components/introcomponent";
+import Intro from "../components/intro-component";
 import Layout from "../components/layout";
 import { getAllGames } from "../lib/games";
 import Head from "next/head";

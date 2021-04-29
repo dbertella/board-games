@@ -5,12 +5,14 @@ export default function Footer() {
   return (
     <Box
       as="footer"
+      variant="styles.container"
       sx={{
+        my: 3,
         p: 2,
       }}
     >
-      <Text sx={{ fontSize: 3, fontWeight: 700, mb: 2 }}>
-        © {dayjs().get("year")} Daniele Bertella
+      <Text sx={{ fontSize: 2 }}>
+        © {dayjs().get("year")} Daniele Bertella 🎲
       </Text>
     </Box>
   );

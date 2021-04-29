@@ -16,6 +16,7 @@ export default function PostHeader({ title, coverImage }: Props) {
           fontSize: 0,
           mb: 1,
           justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <Image
