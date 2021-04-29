@@ -10,7 +10,7 @@ export const Stats = ({
   <>
     <Text as="p">
       Players: {minplayers.value}
-      {maxplayers.value !== minplayers.value ? ` .. ${maxplayers.value}` : ""}
+      {maxplayers.value !== minplayers.value ? ` to ${maxplayers.value}` : ""}
     </Text>
     <Text as="p">Playtime: {playingtime.value} min</Text>
     <Text as="p">

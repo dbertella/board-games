@@ -16,8 +16,9 @@ import he from "he";
 import { Stats } from "../../components/game-stats";
 import GameDate from "../../components/game-date";
 import GameRating from "../../components/game-rating";
-import { Flex, Box, Heading, Link } from "@theme-ui/components";
+import { Flex, Box, Heading, Link, Image } from "@theme-ui/components";
 import { FiLink } from "react-icons/fi";
+import BackButton from "components/back";
 
 type Props = {
   post: PostType;
@@ -41,46 +42,68 @@ const Post = ({ post }: Props) => {
               <title>{post.title} | Daniele Bertella</title>
               <meta property="og:image" content={post.ogImage} />
             </Head>
-            <PostHeader title={post.title} coverImage={post.coverImage} />
-            <GameDate dateString={post.date} />
-            <GameRating rating={post.rating} />
-            <PostBody content={post.content} />
-            <Box
+            <BackButton />
+            <Flex
               sx={{
-                position: "relative",
-                bg: "muted",
-                p: 3,
-                borderRadius: 15,
-                mt: 3,
+                flexDirection: ["column", null, "row"],
+                justifyContent: ["center", null, "space-between"],
+                alignItems: ["center", null, "flex-start"],
               }}
             >
-              <Flex
+              <Image
+                src={post.coverImage}
                 sx={{
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  mb: 2,
+                  maxWidth: "100%",
+                  width: 350,
+                  height: "auto",
+                  flexShrink: 0,
                 }}
-              >
-                <Heading as="h2">From BGG</Heading>
-                <Link
-                  href={`https://boardgamegeek.com/boardgame/${post.item.id}`}
-                  sx={{ mb: 3 }}
-                >
-                  Source
-                  <FiLink sx={{ ml: 1 }} size={14} />
-                </Link>
-              </Flex>
-              <Stats {...post.item} />
-              <Heading as="h3" sx={{ my: 3 }}>
-                Description
-              </Heading>
-
-              <Clamp
-                id="game-description"
-                text={he.decode(he.decode(post.item.description))}
-                lines={4}
               />
-            </Box>
+              <Box p={3} />
+              <Box>
+                <PostTitle sx={{ mb: 3 }}>{post.title}</PostTitle>
+
+                <GameDate dateString={post.date} />
+                <GameRating rating={post.rating} />
+                <PostBody content={post.content} />
+                <Box
+                  sx={{
+                    position: "relative",
+                    bg: "muted",
+                    p: 3,
+                    mt: 3,
+                    borderRadius: 15,
+                  }}
+                >
+                  <Flex
+                    sx={{
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      mb: 2,
+                    }}
+                  >
+                    <Heading as="h2">From BGG</Heading>
+                    <Link
+                      href={`https://boardgamegeek.com/boardgame/${post.item.id}`}
+                      sx={{ mb: 3 }}
+                    >
+                      Source
+                      <FiLink sx={{ ml: 1 }} size={14} />
+                    </Link>
+                  </Flex>
+                  <Stats {...post.item} />
+                  <Heading as="h3" sx={{ my: 3 }}>
+                    Description
+                  </Heading>
+
+                  <Clamp
+                    id="game-description"
+                    text={he.decode(he.decode(post.item.description))}
+                    lines={4}
+                  />
+                </Box>
+              </Box>
+            </Flex>
           </article>
         </>
       )}
