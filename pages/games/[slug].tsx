@@ -10,7 +10,6 @@ import Head from "next/head";
 import markdownToHtml from "../../lib/markdownToHtml";
 import PostType from "../../types/post";
 import PostTitle from "../../components/post-title";
-import PostHeader from "../../components/post-header";
 import { fetchAPI } from "../../lib/api";
 import he from "he";
 import { Stats } from "../../components/game-stats";
