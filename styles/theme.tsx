@@ -33,7 +33,7 @@ export default {
       maxWidth: 1200,
       my: 2,
       mx: "auto",
-      px: [3, 4],
+      px: [3, null, 4],
       fontSize: [2, null, 3],
     },
     h1: {

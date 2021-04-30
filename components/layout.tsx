@@ -11,7 +11,7 @@ const Layout: FC = ({ children }) => {
         This website uses cookies to enhance the user experience.
       </CookieConsent>
       <Meta />
-      <Box as="main" variant="styles.container" sx={{ px: 1 }}>
+      <Box as="main" variant="styles.container">
         {children}
       </Box>
       <Footer />

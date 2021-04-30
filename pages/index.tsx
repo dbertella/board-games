@@ -7,12 +7,14 @@ import { getAllGames } from "../lib/games";
 import Head from "next/head";
 import {
   Box,
+  Button,
   Flex,
   Grid,
   Heading,
   Image,
   Label,
   Select,
+  SelectProps,
 } from "@theme-ui/components";
 import PostType from "../types/post";
 import Link from "next/link";
@@ -21,9 +23,9 @@ import { BggGameSingle } from "../types/bgg";
 import { Stats } from "components/game-stats";
 import GameDate from "components/game-date";
 import GameRating from "components/game-rating";
-import { min, max, uniq, orderBy, range } from "lodash";
+import { min, max, uniq, orderBy, range, kebabCase } from "lodash";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 type Props = {
   allPosts: PostType[];
@@ -45,6 +47,40 @@ const Arrow = () => (
   </svg>
 );
 
+const FilterSelect = ({
+  label,
+  ...rest
+}: SelectProps & {
+  label: string;
+}) => {
+  return (
+    <Box
+      sx={{
+        position: "relative",
+        mx: 2,
+        flex: 1,
+      }}
+    >
+      <Label
+        htmlFor={kebabCase(label)}
+        sx={{ position: "absolute", fontSize: 1, top: -3, left: 0 }}
+      >
+        {label}
+      </Label>
+      <Select
+        {...rest}
+        arrow={<Arrow />}
+        id={kebabCase(label)}
+        sx={{
+          minWidth: 200,
+          fontSize: 2,
+          width: "100%",
+        }}
+      />
+    </Box>
+  );
+};
+
 const getPlayersAndPlayTimeOptions = (allGames: PostType[]) => {
   const minPlayer = min(allGames.map((g) => Number(g.item.minplayers.value)));
   const maxPlayer = max(allGames.map((g) => Number(g.item.maxplayers.value)));
@@ -58,9 +94,13 @@ const getPlayersAndPlayTimeOptions = (allGames: PostType[]) => {
 const Index = ({ allPosts }: Props) => {
   const router = useRouter();
   const { order } = router.query;
-  const [nPlayersOption, playTimeOptions] = getPlayersAndPlayTimeOptions(
-    allPosts
+  const [nPlayersOption, playTimeOptions] = useMemo(
+    () => getPlayersAndPlayTimeOptions(allPosts),
+    [allPosts]
   );
+
+  const [filterDisplay, setFilterDisplay] = useState(false);
+
   const [nPlayers, setNPlayers] = useState<number>();
   const [playTime, setPlayTime] = useState<number>();
 
@@ -91,22 +131,21 @@ const Index = ({ allPosts }: Props) => {
         <Flex
           sx={{
             mb: 3,
+            mx: -2,
             position: "sticky",
             top: 0,
             zIndex: 1,
             bg: "background",
+            flexDirection: ["column", null, "row"],
           }}
         >
-          <Label htmlFor="order" sx={{ fontSize: 2, alignItems: "baseline" }}>
-            Sorted by
-            <Select
-              id="order"
-              sx={{
-                minWidth: 200,
-                ml: 2,
-                flex: 1,
-              }}
-              arrow={<Arrow />}
+          <Flex
+            sx={{
+              flex: 1,
+            }}
+          >
+            <FilterSelect
+              label="Sort by"
               value={order}
               onChange={({ target }) =>
                 router.push({ query: { order: target.value } })
@@ -115,56 +154,48 @@ const Index = ({ allPosts }: Props) => {
               <option value="rating">Rating</option>
               <option value="date">Purchased Date</option>
               <option value="title">Title</option>
-            </Select>
-          </Label>
-          <Label
-            htmlFor="number-players"
-            sx={{ fontSize: 2, alignItems: "baseline" }}
+            </FilterSelect>
+            <Button
+              sx={{ display: [null, null, "none"], fontSize: 1, mx: 1 }}
+              onClick={() => setFilterDisplay((state) => !state)}
+            >
+              Filter
+            </Button>
+          </Flex>
+          <Flex
+            sx={{
+              flex: 2,
+              flexDirection: ["column", null, "row"],
+              display: [filterDisplay ? "flex" : "none", null, "flex"],
+            }}
           >
-            Number of players
-            <Select
-              id="number-players"
-              sx={{
-                minWidth: 200,
-                ml: 2,
-                flex: 1,
-              }}
-              arrow={<Arrow />}
+            <Box sx={{ mt: 3 }} />
+            <FilterSelect
+              label="Number of players"
               value={nPlayers}
               onChange={({ target }) => setNPlayers(Number(target.value))}
             >
-              <option value="">-</option>
+              <option value="">All number of players</option>
               {nPlayersOption.map((o) => (
                 <option key={o} value={o}>
                   {o}
                 </option>
               ))}
-            </Select>
-          </Label>
-          <Label
-            htmlFor="play-time"
-            sx={{ fontSize: 2, alignItems: "baseline" }}
-          >
-            Playtime
-            <Select
-              id="play-time"
-              sx={{
-                minWidth: 200,
-                ml: 2,
-                flex: 1,
-              }}
-              arrow={<Arrow />}
+            </FilterSelect>
+            <Box sx={{ mt: 3 }} />
+            <FilterSelect
+              label="Playtime"
               value={playTime}
               onChange={({ target }) => setPlayTime(Number(target.value))}
             >
-              <option value="">-</option>
+              <option value="">All playtimes</option>
               {playTimeOptions.map((o) => (
                 <option key={o} value={o}>
                   {o} min
                 </option>
               ))}
-            </Select>
-          </Label>
+            </FilterSelect>
+          </Flex>
         </Flex>
         <Grid columns={["auto", "1fr 1fr", "1fr 1fr 1fr"]}>
           {orderedGames.map((p) => (

@@ -8,7 +8,7 @@ export default function Footer() {
       variant="styles.container"
       sx={{
         my: 3,
-        p: 2,
+        py: 2,
       }}
     >
       <Text sx={{ fontSize: 2 }}>
