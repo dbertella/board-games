@@ -13,6 +13,7 @@ import {
   Image,
   Label,
   Select,
+  Slider,
 } from "@theme-ui/components";
 import PostType from "../types/post";
 import Link from "next/link";
@@ -21,18 +22,63 @@ import { BggGameSingle } from "../types/bgg";
 import { Stats } from "components/game-stats";
 import GameDate from "components/game-date";
 import GameRating from "components/game-rating";
-import { orderBy } from "lodash";
+import { min, max, uniq, orderBy, range } from "lodash";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 type Props = {
   allPosts: PostType[];
 };
 
+const Arrow = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="currentcolor"
+    sx={{
+      ml: -28,
+      alignSelf: "center",
+      pointerEvents: "none",
+    }}
+  >
+    <path d="M7.41 7.84l4.59 4.58 4.59-4.58 1.41 1.41-6 6-6-6z" />
+  </svg>
+);
+
+const getPlayersAndPlayTimeOptions = (allGames: PostType[]) => {
+  const minPlayer = min(allGames.map((g) => Number(g.item.minplayers.value)));
+  const maxPlayer = max(allGames.map((g) => Number(g.item.maxplayers.value)));
+  const playTimes = uniq(allGames.map((g) => Number(g.item.playingtime.value)))
+    .filter(Boolean)
+    .sort((a, b) => a - b);
+
+  return [range(minPlayer as number, maxPlayer as number), playTimes];
+};
+
 const Index = ({ allPosts }: Props) => {
   const router = useRouter();
   const { order } = router.query;
-  
-  const orderedGames = orderBy(allPosts, order, [
+  const [nPlayersOption, playTimeOptions] = getPlayersAndPlayTimeOptions(
+    allPosts
+  );
+  const [nPlayers, setNPlayers] = useState<number>();
+  const [playTime, setPlayTime] = useState<number>();
+
+  let filteredGames = allPosts;
+  if (!!nPlayers) {
+    filteredGames = allPosts.filter(
+      (g) =>
+        Number(g.item.minplayers.value) <= nPlayers &&
+        Number(g.item.maxplayers.value) >= nPlayers
+    );
+  }
+  if (!!playTime) {
+    filteredGames = allPosts.filter(
+      (g) => Number(g.item.playingtime.value) === playTime
+    );
+  }
+  const orderedGames = orderBy(filteredGames, order, [
     order === "title" ? "asc" : "desc",
   ]);
   return (
@@ -42,10 +88,8 @@ const Index = ({ allPosts }: Props) => {
           <title>My Boardgames | Daniele Bertella</title>
         </Head>
         <Intro />
-        <Label htmlFor="order" sx={{ fontSize: 2 }}>
-          Order by
-        </Label>
-        <Box
+
+        <Flex
           sx={{
             mb: 3,
             position: "sticky",
@@ -54,33 +98,75 @@ const Index = ({ allPosts }: Props) => {
             bg: "background",
           }}
         >
-          <Select
-            id="order"
-            arrow={
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="currentcolor"
-                sx={{
-                  ml: -28,
-                  alignSelf: "center",
-                  pointerEvents: "none",
-                }}
-              >
-                <path d="M7.41 7.84l4.59 4.58 4.59-4.58 1.41 1.41-6 6-6-6z" />
-              </svg>
-            }
-            value={order}
-            onChange={({ target }) =>
-              router.push({ query: { order: target.value } })
-            }
+          <Label htmlFor="order" sx={{ fontSize: 2, alignItems: "baseline" }}>
+            Sorted by
+            <Select
+              id="order"
+              sx={{
+                minWidth: 200,
+                ml: 2,
+                flex: 1,
+              }}
+              arrow={<Arrow />}
+              value={order}
+              onChange={({ target }) =>
+                router.push({ query: { order: target.value } })
+              }
+            >
+              <option value="rating">Rating</option>
+              <option value="date">Purchased Date</option>
+              <option value="title">Title</option>
+            </Select>
+          </Label>
+          <Label
+            htmlFor="number-players"
+            sx={{ fontSize: 2, alignItems: "baseline" }}
           >
-            <option value="date">Purchased Date</option>
-            <option value="rating">Rating</option>
-            <option value="title">Title</option>
-          </Select>
-        </Box>
+            Number of players
+            <Select
+              id="number-players"
+              sx={{
+                minWidth: 200,
+                ml: 2,
+                flex: 1,
+              }}
+              arrow={<Arrow />}
+              value={nPlayers}
+              onChange={({ target }) => setNPlayers(Number(target.value))}
+            >
+              <option value="">-</option>
+              {nPlayersOption.map((o) => (
+                <option key={o} value={o}>
+                  {o}
+                </option>
+              ))}
+            </Select>
+          </Label>
+          <Label
+            htmlFor="play-time"
+            sx={{ fontSize: 2, alignItems: "baseline" }}
+          >
+            Playtime
+            <Select
+              id="play-time"
+              sx={{
+                minWidth: 200,
+                ml: 2,
+                flex: 1,
+              }}
+              arrow={<Arrow />}
+              value={playTime}
+              onChange={({ target }) => setPlayTime(Number(target.value))}
+            >
+              <option value="">-</option>
+              {playTimeOptions.map((o) => (
+                <option key={o} value={o}>
+                  {o} min
+                </option>
+              ))}
+            </Select>
+          </Label>
+        </Flex>
         <Grid columns={["auto", "1fr 1fr", "1fr 1fr 1fr"]}>
           {orderedGames.map((p) => (
             <Link
