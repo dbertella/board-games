@@ -13,7 +13,6 @@ import {
   Image,
   Label,
   Select,
-  Slider,
 } from "@theme-ui/components";
 import PostType from "../types/post";
 import Link from "next/link";
