@@ -63,7 +63,7 @@ const FilterSelect = ({
     >
       <Label
         htmlFor={kebabCase(label)}
-        sx={{ position: "absolute", fontSize: 1, top: "-1.2rem", left: 0 }}
+        sx={{ position: "absolute", fontSize: 0, top: "-1rem", left: 0 }}
       >
         {label}
       </Label>
@@ -130,6 +130,7 @@ const Index = ({ allPosts }: Props) => {
 
         <Flex
           sx={{
+            pb: 2,
             mb: 3,
             mx: -2,
             position: "sticky",
@@ -158,10 +159,8 @@ const Index = ({ allPosts }: Props) => {
             <Button
               sx={{
                 display: [null, null, "none"],
-                bg: "muted",
-                color: "text",
                 lineHeight: 1,
-                mx: 1,
+                mr: 2,
                 fontSize: 0,
               }}
               onClick={() => setFilterDisplay((state) => !state)}

@@ -12,7 +12,8 @@ export default function Date({ dateString }: Props) {
   const date = dayjs(dateString);
   return (
     <Text as="p">
-      <strong>Purchased:</strong>{" "}
+      <strong>Purchased:</strong>
+      {dayjs().isBefore(dateString) ? " 🔜 " : " "}
       <time dateTime={dateString}>{date.format("MMM YYYY")}</time>
     </Text>
   );
