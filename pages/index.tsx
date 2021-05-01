@@ -26,25 +26,21 @@ import GameRating from "components/game-rating";
 import { min, max, uniq, orderBy, range, kebabCase } from "lodash";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
+import { FiChevronDown } from "react-icons/fi";
+import { BsFilterRight } from "react-icons/bs";
 
 type Props = {
   allPosts: PostType[];
 };
 
 const Arrow = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="currentcolor"
+  <FiChevronDown
     sx={{
       ml: -28,
       alignSelf: "center",
       pointerEvents: "none",
     }}
-  >
-    <path d="M7.41 7.84l4.59 4.58 4.59-4.58 1.41 1.41-6 6-6-6z" />
-  </svg>
+  />
 );
 
 const FilterSelect = ({
@@ -63,7 +59,7 @@ const FilterSelect = ({
     >
       <Label
         htmlFor={kebabCase(label)}
-        sx={{ position: "absolute", fontSize: 1, top: -3, left: 0 }}
+        sx={{ position: "absolute", fontSize: 1, top: "-1.2rem", left: 0 }}
       >
         {label}
       </Label>
@@ -156,10 +152,19 @@ const Index = ({ allPosts }: Props) => {
               <option value="title">Title</option>
             </FilterSelect>
             <Button
-              sx={{ display: [null, null, "none"], fontSize: 1, mx: 1 }}
+              sx={{
+                display: [null, null, "none"],
+                bg: "muted",
+                color: "text",
+                lineHeight: 1,
+                mx: 1,
+                fontSize: 0,
+              }}
               onClick={() => setFilterDisplay((state) => !state)}
             >
-              Filter
+              {filterDisplay ? "Hide" : "Show"}
+              <br />
+              Filters
             </Button>
           </Flex>
           <Flex
