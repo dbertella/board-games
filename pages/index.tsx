@@ -26,21 +26,25 @@ import GameRating from "components/game-rating";
 import { min, max, uniq, orderBy, range, kebabCase } from "lodash";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
-import { FiChevronDown } from "react-icons/fi";
-import { BsFilterRight } from "react-icons/bs";
 
 type Props = {
   allPosts: PostType[];
 };
 
 const Arrow = () => (
-  <FiChevronDown
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="currentcolor"
     sx={{
       ml: -28,
       alignSelf: "center",
       pointerEvents: "none",
     }}
-  />
+  >
+    <path d="M7.41 7.84l4.59 4.58 4.59-4.58 1.41 1.41-6 6-6-6z" />
+  </svg>
 );
 
 const FilterSelect = ({
