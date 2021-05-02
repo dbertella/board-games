@@ -42,6 +42,6 @@ export function getAllGames(fields: string[] = []) {
   const games = slugs
     .map((slug) => getGameBySlug(slug, fields))
     // sort games by rating in descending order
-    .sort((game1, game2) => (game1.rating > game2.rating ? -1 : 1));
+    .sort((game1, game2) => (game1.rating > game2.rating ? 1 : -1));
   return games;
 }

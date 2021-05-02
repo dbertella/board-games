@@ -5,17 +5,7 @@ import Intro from "../components/intro-component";
 import Layout from "../components/layout";
 import { getAllGames } from "../lib/games";
 import Head from "next/head";
-import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Heading,
-  Image,
-  Label,
-  Select,
-  SelectProps,
-} from "@theme-ui/components";
+import { Box, Flex, Grid, Heading, Image } from "@theme-ui/components";
 import PostType from "../types/post";
 import Link from "next/link";
 import { fetchAPI } from "../lib/api";
@@ -23,116 +13,44 @@ import { BggGameSingle } from "../types/bgg";
 import { Stats } from "components/game-stats";
 import GameDate from "components/game-date";
 import GameRating from "components/game-rating";
-import { min, max, uniq, orderBy, range, kebabCase } from "lodash";
+import { orderBy } from "lodash";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
-import { useScrollPosition } from "@n8tb1t/use-scroll-position";
+import { CollectionFilters } from "components/CollectionFilters";
 
 type Props = {
   allPosts: PostType[];
 };
 
-const Arrow = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="currentcolor"
-    sx={{
-      ml: -28,
-      alignSelf: "center",
-      pointerEvents: "none",
-    }}
-  >
-    <path d="M7.41 7.84l4.59 4.58 4.59-4.58 1.41 1.41-6 6-6-6z" />
-  </svg>
-);
-
-const FilterSelect = ({
-  label,
-  ...rest
-}: SelectProps & {
-  label: string;
-}) => {
-  return (
-    <Box
-      sx={{
-        position: "relative",
-        mx: 2,
-        flex: 1,
-      }}
-    >
-      <Label
-        htmlFor={kebabCase(label)}
-        sx={{ position: "absolute", fontSize: 0, top: "-1rem", left: 0 }}
-      >
-        {label}
-      </Label>
-      <Select
-        {...rest}
-        arrow={<Arrow />}
-        id={kebabCase(label)}
-        sx={{
-          minWidth: 200,
-          fontSize: 2,
-          width: "100%",
-        }}
-      />
-    </Box>
-  );
-};
-
-const getPlayersAndPlayTimeOptions = (allGames: PostType[]) => {
-  const minPlayer = min(allGames.map((g) => Number(g.item.minplayers.value)));
-  const maxPlayer = max(allGames.map((g) => Number(g.item.maxplayers.value)));
-  const playTimes = uniq(allGames.map((g) => Number(g.item.playingtime.value)))
-    .filter(Boolean)
-    .sort((a, b) => a - b);
-
-  return [range(minPlayer as number, maxPlayer as number), playTimes];
-};
-
 const Index = ({ allPosts }: Props) => {
   const router = useRouter();
   const { order } = router.query;
-  const [nPlayersOption, playTimeOptions] = useMemo(
-    () => getPlayersAndPlayTimeOptions(allPosts),
-    [allPosts]
-  );
-
-  const [filterDisplay, setFilterDisplay] = useState(false);
-
   const [nPlayers, setNPlayers] = useState<number>();
   const [playTime, setPlayTime] = useState<number>();
 
-  let filteredGames = allPosts;
-  if (!!nPlayers) {
-    filteredGames = allPosts.filter(
-      (g) =>
-        Number(g.item.minplayers.value) <= nPlayers &&
-        Number(g.item.maxplayers.value) >= nPlayers
-    );
-  }
-  if (!!playTime) {
-    filteredGames = allPosts.filter(
-      (g) => Number(g.item.playingtime.value) === playTime
-    );
-  }
-  const orderedGames = orderBy(filteredGames, order, [
-    order === "title" ? "asc" : "desc",
-  ]);
+  const filteredGames = useMemo(() => {
+    let filtered = allPosts;
+    if (!!nPlayers) {
+      filtered = filtered.filter(
+        (g) =>
+          Number(g.item.minplayers.value) <= nPlayers &&
+          Number(g.item.maxplayers.value) >= nPlayers
+      );
+    }
+    if (!!playTime) {
+      filtered = filtered.filter(
+        (g) => Number(g.item.playingtime.value) === playTime
+      );
+    }
+    return filtered;
+  }, [allPosts, nPlayers, playTime]);
 
-  const [hideOnScroll, setHideOnScroll] = useState(true);
-
-  useScrollPosition(
-    ({ prevPos, currPos }) => {
-      const isShow = currPos.y > prevPos.y; // || currPos.y > -70;
-      if (isShow !== hideOnScroll) setHideOnScroll(isShow);
-    },
-    [hideOnScroll],
-    undefined,
-    false,
-    300
+  const orderedGames = orderBy(
+    filteredGames,
+    ["title", "date"].includes(order as string)
+      ? order
+      : (it) => Number(it[order as string]),
+    [order === "title" ? "asc" : "desc"]
   );
 
   return (
@@ -142,92 +60,10 @@ const Index = ({ allPosts }: Props) => {
           <title>My Boardgames | Daniele Bertella</title>
         </Head>
         <Intro />
-
-        <Flex
-          sx={{
-            pt: 3,
-            pb: 2,
-            mb: 3,
-            mx: -2,
-            position: "sticky",
-            top: 0,
-            zIndex: 1,
-            bg: "background",
-            flexDirection: ["column", null, "row"],
-            visibility: hideOnScroll ? "visible" : "hidden",
-            transition: `all 200ms ${hideOnScroll ? "ease-in" : "ease-out"}`,
-            transform: hideOnScroll ? "none" : "translate(0, -100%)",
-          }}
-        >
-          <Flex
-            sx={{
-              flex: 1,
-            }}
-          >
-            <FilterSelect
-              label="Sort by"
-              value={order}
-              onChange={({ target }) =>
-                router.push({ query: { order: target.value } })
-              }
-            >
-              <option value="rating">Rating</option>
-              <option value="date">Purchased Date</option>
-              <option value="title">Title</option>
-            </FilterSelect>
-            <Button
-              sx={{
-                display: [null, null, "none"],
-                lineHeight: 1,
-                mr: 2,
-                fontSize: 0,
-              }}
-              onClick={() => setFilterDisplay((state) => !state)}
-            >
-              {filterDisplay ? "Hide" : "Show"}
-              <br />
-              Filters
-            </Button>
-          </Flex>
-          <Flex
-            sx={{
-              flex: 2,
-              flexDirection: ["column", null, "row"],
-              display: [filterDisplay ? "flex" : "none", null, "flex"],
-              position: ["absolute", null, "relative"],
-              top: "100%",
-              bg: "background",
-              width: "100%",
-            }}
-          >
-            <Box sx={{ mt: 3 }} />
-            <FilterSelect
-              label="Number of players"
-              value={nPlayers}
-              onChange={({ target }) => setNPlayers(Number(target.value))}
-            >
-              <option value="">All number of players</option>
-              {nPlayersOption.map((o) => (
-                <option key={o} value={o}>
-                  {o}
-                </option>
-              ))}
-            </FilterSelect>
-            <Box sx={{ mt: 3 }} />
-            <FilterSelect
-              label="Playtime"
-              value={playTime}
-              onChange={({ target }) => setPlayTime(Number(target.value))}
-            >
-              <option value="">All playtimes</option>
-              {playTimeOptions.map((o) => (
-                <option key={o} value={o}>
-                  {o} min
-                </option>
-              ))}
-            </FilterSelect>
-          </Flex>
-        </Flex>
+        <CollectionFilters
+          allPosts={allPosts}
+          {...{ nPlayers, setNPlayers, playTime, setPlayTime }}
+        />
         <Grid columns={["auto", "1fr 1fr", "1fr 1fr 1fr"]}>
           {orderedGames.map((p) => (
             <Link
@@ -254,7 +90,7 @@ const Index = ({ allPosts }: Props) => {
                   {p.title}
                 </Heading>
                 <GameDate dateString={p.date} />
-                <GameRating rating={p.rating} />
+                <GameRating denRating={p.rating} aureRating={p.aureRating} />
                 <Box my={3} />
                 <Stats {...p.item} />
               </Box>
@@ -278,6 +114,7 @@ export const getStaticProps = async () => {
     "excerpt",
     "bggId",
     "rating",
+    "aureRating",
   ]);
 
   const ids = allPosts.map((g) => g.bggId);

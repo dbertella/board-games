@@ -1,8 +1,9 @@
 ---
 excerpt: ""
 bggId: 3955
-date: '2010-09-01'
-rating: '7'
+date: "2010-09-01"
+rating: "7"
+aureRating: "5.5"
 ---
 
 This is probably the first game in my collection. It was back in 2010. With a friend I was hitchiking in the US and a man offered us a ride.

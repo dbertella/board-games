@@ -63,7 +63,10 @@ const Post = ({ post }: Props) => {
                 <PostTitle sx={{ mb: 3 }}>{post.title}</PostTitle>
 
                 <GameDate dateString={post.date} />
-                <GameRating rating={post.rating} />
+                <GameRating
+                  denRating={post.rating}
+                  aureRating={post.aureRating}
+                />
                 <PostBody content={post.content} />
                 <Box
                   sx={{

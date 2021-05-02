@@ -1,13 +1,20 @@
-import { Text } from "@theme-ui/components";
+import { Flex, Text } from "@theme-ui/components";
 
 type Props = {
-  rating: string;
+  denRating: string;
+  aureRating: string;
 };
 
-export default function Rating({ rating }: Props) {
+export default function Rating({ denRating, aureRating }: Props) {
   return (
-    <Text as="p">
-      <strong>My Rating:</strong> {rating}
-    </Text>
+    <>
+      <Flex>
+        <Text sx={{ mr: 3 }}>
+          <strong>Rating:</strong>
+        </Text>
+        <Text sx={{ flex: 1 }}>🚀 Den: {denRating}</Text>
+        <Text sx={{ flex: 1 }}>🦕 Aure: {aureRating}</Text>
+      </Flex>
+    </>
   );
 }
