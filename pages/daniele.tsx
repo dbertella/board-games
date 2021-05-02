@@ -26,7 +26,6 @@ import GameRating from "components/game-rating";
 import { min, max, uniq, orderBy, range, kebabCase } from "lodash";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
-import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 
 type Props = {
   allPosts: PostType[];
@@ -64,7 +63,7 @@ const FilterSelect = ({
     >
       <Label
         htmlFor={kebabCase(label)}
-        sx={{ position: "absolute", fontSize: 0, top: "-1rem", left: 0 }}
+        sx={{ position: "absolute", fontSize: 1, top: "-1.2rem", left: 0 }}
       >
         {label}
       </Label>
@@ -121,20 +120,6 @@ const Index = ({ allPosts }: Props) => {
   const orderedGames = orderBy(filteredGames, order, [
     order === "title" ? "asc" : "desc",
   ]);
-
-  const [hideOnScroll, setHideOnScroll] = useState(true);
-
-  useScrollPosition(
-    ({ prevPos, currPos }) => {
-      const isShow = currPos.y > prevPos.y; // || currPos.y > -70;
-      if (isShow !== hideOnScroll) setHideOnScroll(isShow);
-    },
-    [hideOnScroll],
-    undefined,
-    false,
-    300
-  );
-
   return (
     <>
       <Layout>
@@ -145,8 +130,6 @@ const Index = ({ allPosts }: Props) => {
 
         <Flex
           sx={{
-            pt: 3,
-            pb: 2,
             mb: 3,
             mx: -2,
             position: "sticky",
@@ -154,9 +137,6 @@ const Index = ({ allPosts }: Props) => {
             zIndex: 1,
             bg: "background",
             flexDirection: ["column", null, "row"],
-            visibility: hideOnScroll ? "visible" : "hidden",
-            transition: `all 200ms ${hideOnScroll ? "ease-in" : "ease-out"}`,
-            transform: hideOnScroll ? "none" : "translate(0, -100%)",
           }}
         >
           <Flex
@@ -178,8 +158,11 @@ const Index = ({ allPosts }: Props) => {
             <Button
               sx={{
                 display: [null, null, "none"],
+                border: "1px solid",
+                borderColor: "text",
+                color: "text",
                 lineHeight: 1,
-                mr: 2,
+                mx: 1,
                 fontSize: 0,
               }}
               onClick={() => setFilterDisplay((state) => !state)}
@@ -194,10 +177,6 @@ const Index = ({ allPosts }: Props) => {
               flex: 2,
               flexDirection: ["column", null, "row"],
               display: [filterDisplay ? "flex" : "none", null, "flex"],
-              position: ["absolute", null, "relative"],
-              top: "100%",
-              bg: "background",
-              width: "100%",
             }}
           >
             <Box sx={{ mt: 3 }} />

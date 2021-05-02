@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@n8tb1t/use-scroll-position": "^2.0.3",
     "dayjs": "^1.9.5",
     "fast-xml-parser": "^3.17.5",
     "graphql": "^15.4.0",
