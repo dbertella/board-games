@@ -65,7 +65,7 @@ const Index = ({ allPosts }: Props) => {
           {...{ nPlayers, setNPlayers, playTime, setPlayTime }}
         />
         <Grid columns={["auto", "1fr 1fr", "1fr 1fr 1fr"]}>
-          {orderedGames.map((p) => (
+          {orderedGames.map((p, i) => (
             <Link
               href={{
                 pathname: `/games/${p.slug}`,
@@ -87,7 +87,7 @@ const Index = ({ allPosts }: Props) => {
                   <Image src={p.coverImage} />
                 </Flex>
                 <Heading as="h3" my={3}>
-                  {p.title}
+                  #{++i} {p.title}
                 </Heading>
                 <GameDate dateString={p.date} />
                 <GameRating denRating={p.rating} aureRating={p.aureRating} />
