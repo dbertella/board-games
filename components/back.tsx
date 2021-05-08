@@ -5,12 +5,15 @@ import { FiArrowLeft } from "react-icons/fi";
 
 const BackButton = () => {
   const router = useRouter();
-  const { order } = router.query;
+  const { order, user } = router.query;
   return (
     <Link
       href={{
-        pathname: `/`,
-        query: { ...(order ? { order } : {}) },
+        pathname: "/[user]",
+        query: {
+          user,
+          ...(order ? { order } : {}),
+        },
       }}
       passHref
     >

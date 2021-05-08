@@ -9,7 +9,6 @@ type PostType = {
   excerpt: string;
   ogImage: string;
   rating: string;
-  aureRating: string;
   content: string;
   item: BggGameSingle;
 };

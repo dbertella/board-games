@@ -33,7 +33,7 @@ export const CollectionFilters = ({
   setPlayTime,
 }: Props) => {
   const router = useRouter();
-  const { order } = router.query;
+  const { order, user } = router.query;
   const [hideOnScroll, setHideOnScroll] = useState(true);
   const [filterDisplay, setFilterDisplay] = useState(false);
   useScrollPosition(
@@ -77,11 +77,15 @@ export const CollectionFilters = ({
           label="Sort by"
           value={order}
           onChange={({ target }) =>
-            router.push({ query: { order: target.value } })
+            router.push({
+              query: {
+                user,
+                order: target.value,
+              },
+            })
           }
         >
-          <option value="rating">Den Rating</option>
-          <option value="aureRating">Aure Rating</option>
+          <option value="rating">Rating</option>
           <option value="date">Purchased Date</option>
           <option value="title">Title</option>
         </FilterSelect>
@@ -103,7 +107,11 @@ export const CollectionFilters = ({
         sx={{
           flex: 2,
           flexDirection: ["column", null, "row"],
-          display: [filterDisplay ? null : "none !important", null, "flex !important"],
+          display: [
+            filterDisplay ? null : "none !important",
+            null,
+            "flex !important",
+          ],
           position: ["absolute", null, "relative"],
           top: "100%",
           bg: "background",
