@@ -8,7 +8,11 @@ const defaultOptions = {
   textNodeName: "text",
 };
 
-export async function fetchAPI(endpoint: string, options = defaultOptions) {
+export async function fetchAPI(
+  endpoint: string,
+  options = defaultOptions,
+  retries: number = 5
+): Promise<any> {
   const headers = {
     // "Content-Type": "application/json"
   };
@@ -19,8 +23,15 @@ export async function fetchAPI(endpoint: string, options = defaultOptions) {
   });
 
   try {
-    const text = await res.text();
-    return parser.parse(text, options);
+    if (res.ok) {
+      const text = await res.text();
+      return parser.parse(text, options);
+    }
+    if (retries > 0) {
+      return fetchAPI(endpoint, options, retries - 1);
+    } else {
+      throw new Error("No more retries");
+    }
   } catch (e) {
     throw new Error(e);
   }
