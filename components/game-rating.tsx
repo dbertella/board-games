@@ -7,9 +7,9 @@ type Props = {
   rating: string;
 };
 
-export default function GameRating({ rating }: Props) {
+export default function GameRating({ rating, ...rest }: Props) {
   return (
-    <Flex sx={{ alignItems: "center" }}>
+    <Flex sx={{ alignItems: "center" }} {...rest}>
       <Text sx={{ mr: 2 }}>
         <strong>Rating:</strong>
       </Text>

@@ -6,30 +6,30 @@ import { orderBy } from "lodash";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Box, Flex, Grid, Heading, Image } from "@theme-ui/components";
-import { Stats } from "components/game-stats";
-import GameDate from "components/game-date";
-import GameRating from "components/game-rating";
+import { Box, Grid } from "@theme-ui/components";
 import Intro from "components/intro-component";
 import { CollectionFilters } from "components/CollectionFilters";
 import Layout from "components/layout";
-import { getAllGamesByUser, getUsers } from "lib/games";
-import PostType from "types/post";
+import { getAllGamesByUser, getUserBySlug, getUsers } from "lib/games";
 import { BggGameSingle } from "types/bgg";
+import GameType from "types/game";
 
 import { fetchAPI } from "lib/api";
+import { Game } from "components/Game";
+import { Themed } from "@theme-ui/mdx";
 type Props = {
-  allPosts: PostType[];
+  title: string;
+  allGames: GameType[];
 };
 
-const Index = ({ allPosts }: Props) => {
+const Index = ({ title, allGames }: Props) => {
   const router = useRouter();
   const { order, user } = router.query;
   const [nPlayers, setNPlayers] = useState<number>();
   const [playTime, setPlayTime] = useState<number>();
 
   const filteredGames = useMemo(() => {
-    let filtered = allPosts;
+    let filtered = allGames;
     if (!!nPlayers) {
       filtered = filtered.filter(
         (g) =>
@@ -43,7 +43,7 @@ const Index = ({ allPosts }: Props) => {
       );
     }
     return filtered;
-  }, [allPosts, nPlayers, playTime]);
+  }, [allGames, nPlayers, playTime]);
 
   const orderedGames = orderBy(
     filteredGames,
@@ -57,11 +57,12 @@ const Index = ({ allPosts }: Props) => {
     <>
       <Layout>
         <Head>
-          <title>My Boardgames | Daniele Bertella</title>
+          <title>My Collection | {title}</title>
         </Head>
-        <Intro />
+        <Intro back />
+        <Themed.h1>{title}</Themed.h1>
         <CollectionFilters
-          allPosts={allPosts}
+          allGames={allGames}
           {...{ nPlayers, setNPlayers, playTime, setPlayTime }}
         />
         <Grid columns={["auto", "1fr 1fr", "1fr 1fr 1fr"]}>
@@ -77,25 +78,8 @@ const Index = ({ allPosts }: Props) => {
               key={p.slug}
               passHref
             >
-              <Box
-                sx={{
-                  position: "relative",
-                  bg: "muted",
-                  padding: 3,
-                  cursor: [null, null, "pointer"],
-                  borderRadius: 15,
-                }}
-              >
-                <Flex sx={{ justifyContent: "center" }}>
-                  <Image src={p.coverImage} />
-                </Flex>
-                <Heading as="h3" my={3}>
-                  #{++i} {p.title}
-                </Heading>
-                <GameDate dateString={p.date} />
-                <GameRating rating={p.rating} />
-                <Box my={3} />
-                <Stats {...p.item} />
+              <Box>
+                <Game {...p} position={++i} />
               </Box>
             </Link>
           ))}
@@ -129,7 +113,7 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps = async ({ params }: Params) => {
-  const allPosts = getAllGamesByUser(
+  const allGames = getAllGamesByUser(
     [
       "title",
       "date",
@@ -143,7 +127,9 @@ export const getStaticProps = async ({ params }: Params) => {
     params.user
   );
 
-  const ids = allPosts.map((g) => g.bggId);
+  const user = getUserBySlug(params.user, ["title"]);
+
+  const ids = allGames.map((g) => g.bggId);
 
   const data = await fetchAPI(`thing?id=${ids.join(",")}&stats=1`);
   const gameMap = Object.fromEntries(
@@ -152,7 +138,8 @@ export const getStaticProps = async ({ params }: Params) => {
 
   return {
     props: {
-      allPosts: allPosts.map((p) => ({
+      title: user.title,
+      allGames: allGames.map((p) => ({
         ...p,
         title: he.decode(
           gameMap[p.bggId].name?.[0]?.value ?? gameMap[p.bggId].name?.value

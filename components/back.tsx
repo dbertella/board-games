@@ -1,9 +1,9 @@
-import { Box } from "@theme-ui/components";
+import { Flex, Heading } from "@theme-ui/components";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FiArrowLeft } from "react-icons/fi";
 
-const BackButton = () => {
+const BackButton = ({ title }: { title: string }) => {
   const router = useRouter();
   const { order, user } = router.query;
   return (
@@ -17,9 +17,12 @@ const BackButton = () => {
       }}
       passHref
     >
-      <Box>
+      <Flex sx={{ mb: 3, alignItems: "center" }}>
         <FiArrowLeft size={32} />
-      </Box>
+        <Heading as="h2" sx={{ ml: 3 }}>
+          {title} Collection
+        </Heading>
+      </Flex>
     </Link>
   );
 };

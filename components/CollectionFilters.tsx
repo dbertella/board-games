@@ -2,13 +2,13 @@ import { Box, Button, Flex } from "@theme-ui/components";
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import { FilterSelect } from "components/FilterSelect";
 import { useMemo, useState } from "react";
-import PostType from "types/post";
+import GameType from "types/game";
 import { min, max, uniq, range } from "lodash";
 import { useRouter } from "next/router";
 
 const HEADER_HEIGHT = 80;
 
-const getPlayersAndPlayTimeOptions = (allGames: PostType[]) => {
+const getPlayersAndPlayTimeOptions = (allGames: GameType[]) => {
   const minPlayer = min(allGames.map((g) => Number(g.item.minplayers.value)));
   const maxPlayer = max(allGames.map((g) => Number(g.item.maxplayers.value)));
   const playTimes = uniq(allGames.map((g) => Number(g.item.playingtime.value)))
@@ -19,14 +19,14 @@ const getPlayersAndPlayTimeOptions = (allGames: PostType[]) => {
 };
 
 type Props = {
-  allPosts: PostType[];
+  allGames: GameType[];
   nPlayers?: number;
   setNPlayers: (n: number) => void;
   playTime?: number;
   setPlayTime: (n: number) => void;
 };
 export const CollectionFilters = ({
-  allPosts,
+  allGames,
   nPlayers,
   setNPlayers,
   playTime,
@@ -47,8 +47,8 @@ export const CollectionFilters = ({
     500
   );
   const [nPlayersOption, playTimeOptions] = useMemo(
-    () => getPlayersAndPlayTimeOptions(allPosts),
-    [allPosts]
+    () => getPlayersAndPlayTimeOptions(allGames),
+    [allGames]
   );
 
   return (

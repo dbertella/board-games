@@ -5,10 +5,10 @@ import Clamp from "react-clamp-lines";
 import ErrorPage from "next/error";
 import PostBody from "../../components/post-body";
 import Layout from "../../components/layout";
-import { getGameBySlug, getAllGames } from "../../lib/games";
+import { getGameBySlug, getAllGames, getUserBySlug } from "../../lib/games";
 import Head from "next/head";
 import markdownToHtml from "../../lib/markdownToHtml";
-import PostType from "../../types/post";
+import GameType from "../../types/game";
 import PostTitle from "../../components/post-title";
 import { fetchAPI } from "../../lib/api";
 import he from "he";
@@ -20,12 +20,13 @@ import { FiLink } from "react-icons/fi";
 import BackButton from "components/back";
 
 type Props = {
-  post: PostType;
-  morePosts: PostType[];
+  title: string;
+  post: GameType;
+  morePosts: GameType[];
   preview?: boolean;
 };
 
-const Post = ({ post }: Props) => {
+const Post = ({ post, title }: Props) => {
   const router = useRouter();
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />;
@@ -38,10 +39,12 @@ const Post = ({ post }: Props) => {
         <>
           <article className="mb-32">
             <Head>
-              <title>{post.title} | Daniele Bertella</title>
+              <title>
+                {post.title} | {title} Collection
+              </title>
               <meta property="og:image" content={post.ogImage} />
             </Head>
-            <BackButton />
+            <BackButton title={title} />
             <Flex
               sx={{
                 flexDirection: ["column", null, "row"],
@@ -139,8 +142,12 @@ export async function getStaticProps({ params }: Params) {
     data.items.item.name.value;
   const ogImage = post.ogImage ?? data.items.item.image;
   const coverImage = post.coverImage ?? data.items.item.image;
+
+  const user = getUserBySlug(params.user, ["title"]);
+
   return {
     props: {
+      title: user.title,
       post: {
         ...post,
         content,
@@ -155,7 +162,6 @@ export async function getStaticProps({ params }: Params) {
 
 export async function getStaticPaths() {
   const posts = Object.values(getAllGames(["slug", "user"]));
-  console.log(posts)
   return {
     paths: posts.flat().map((post) => {
       return {

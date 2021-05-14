@@ -1,10 +1,16 @@
-import { Themed } from "@theme-ui/mdx";
-import Link from "next/link";
+/** @jsxImportSource theme-ui */
 
-const Intro = () => {
+import { Flex, Heading } from "@theme-ui/components";
+import Link from "next/link";
+import { FiArrowLeft } from "react-icons/fi";
+
+const Intro = ({ back }: { back?: boolean }) => {
   return (
     <Link href="/" passHref>
-      <Themed.h2>My Boardgames.</Themed.h2>
+      <Flex sx={{ alignItems: "center" }}>
+        {back && <FiArrowLeft size={32} sx={{ mr: 3 }} />}
+        <Heading as="h2">Game Collections.</Heading>
+      </Flex>
     </Link>
   );
 };

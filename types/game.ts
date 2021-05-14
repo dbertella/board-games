@@ -1,6 +1,6 @@
 import { BggGameSingle } from "./bgg";
 
-type PostType = {
+type GameType = {
   slug: string;
   title: string;
   date: string;
@@ -13,4 +13,4 @@ type PostType = {
   item: BggGameSingle;
 };
 
-export default PostType;
+export default GameType;

@@ -26,9 +26,9 @@ type Props = {
 
 export const Rating = ({ value, ...rest }: Props) => (
   <svg
-    width="36"
+    width="40"
     height="24"
-    viewBox="0 0 36 24"
+    viewBox="0 0 40 24"
     fill="white"
     {...rest}
     xmlns="http://www.w3.org/2000/svg"
@@ -36,11 +36,10 @@ export const Rating = ({ value, ...rest }: Props) => (
     <rect
       x="0.5"
       y="0.5"
-      width="35"
-      height="23"
+      width="40"
+      height="24"
       rx="0.5"
       fill={getColorForRating(value)}
-      stroke={getColorForRating(value)}
     />
     <text
       x="50%"

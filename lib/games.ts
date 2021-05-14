@@ -1,6 +1,7 @@
 import fs from "fs";
 import { join } from "path";
 import matter from "gray-matter";
+import { take } from "lodash";
 
 const gamesDirectory = join(process.cwd(), "_users");
 
@@ -99,4 +100,12 @@ export function getAllUsers(fields: string[]) {
 
 export function getAllGamesByUser(fields: string[], user: string) {
   return getAllGames(fields)[user];
+}
+
+export function getNGamesByUser(
+  fields: string[],
+  user: string,
+  quantity: number
+) {
+  return take(getAllGames(fields)[user].reverse(), quantity);
 }
