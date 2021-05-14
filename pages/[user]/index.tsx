@@ -93,7 +93,7 @@ const Index = ({ allPosts }: Props) => {
                   #{++i} {p.title}
                 </Heading>
                 <GameDate dateString={p.date} />
-                <GameRating denRating={p.rating} />
+                <GameRating rating={p.rating} />
                 <Box my={3} />
                 <Stats {...p.item} />
               </Box>

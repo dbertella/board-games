@@ -1,13 +1,19 @@
-import { Text } from "@theme-ui/components";
+/** @jsxImportSource theme-ui */
+
+import { Flex, Text } from "@theme-ui/components";
+import { Rating } from "./Rating";
 
 type Props = {
-  denRating: string;
+  rating: string;
 };
 
-export default function Rating({ denRating }: Props) {
+export default function GameRating({ rating }: Props) {
   return (
-    <Text sx={{ mr: 3 }}>
-      <strong>Rating:</strong> {denRating}
-    </Text>
+    <Flex sx={{ alignItems: "center" }}>
+      <Text sx={{ mr: 2 }}>
+        <strong>Rating:</strong>
+      </Text>
+      <Rating value={Number(rating)} />
+    </Flex>
   );
 }

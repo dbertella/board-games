@@ -64,7 +64,7 @@ export const CollectionFilters = ({
         bg: "background",
         flexDirection: ["column", null, "row"],
         visibility: hideOnScroll ? "visible" : "hidden",
-        transition: `all 300ms ${hideOnScroll ? "ease-in" : "ease-out"}`,
+        transition: `all  ${hideOnScroll ? "100ms" : "300ms"} ease-in-out`,
         transform: hideOnScroll ? "none" : "translate(0, -100%)",
       }}
     >
