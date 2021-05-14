@@ -35,27 +35,38 @@ const Index = ({ users }: Props) => {
             <Text as="p" sx={{ fontSize: 1, mb: 3 }}>
               {excerpt}
             </Text>
-            <Heading as="h3" sx={{ mb: 2 }}>
-              Top 5
-            </Heading>
-            <Grid columns={["1fr 1fr 1fr", null, "1fr 1fr 1fr 1fr 1fr"]}>
-              {games.map((game, i) => (
-                <Link href={`/${slug}/${game.slug}`} key={game.slug} passHref>
-                  <Box>
-                    <GameSmall {...game} position={++i} />
-                  </Box>
+            <Box
+              sx={{
+                bg: "muted",
+                p: 3,
+                borderRadius: 15,
+              }}
+            >
+              <Heading as="h3" sx={{ mb: 3 }}>
+                Top 5
+              </Heading>
+              <Grid
+                columns={["1fr 1fr 1fr", null, "1fr 1fr 1fr 1fr 1fr"]}
+                sx={{ alignItems: "center" }}
+              >
+                {games.map((game, i) => (
+                  <Link href={`/${slug}/${game.slug}`} key={game.slug} passHref>
+                    <Box>
+                      <GameSmall {...game} position={++i} />
+                    </Box>
+                  </Link>
+                ))}
+              </Grid>
+              <Flex sx={{ justifyContent: "center" }}>
+                <Link key={slug} href={`/${slug}`}>
+                  <Button as="a" sx={{ alignItems: "center", fontSize: 1 }}>
+                    <Flex sx={{ alignItems: "center" }}>
+                      VIEW ALL <FiArrowRight sx={{ ml: 2 }} />
+                    </Flex>
+                  </Button>
                 </Link>
-              ))}
-            </Grid>
-            <Flex sx={{ justifyContent: "center" }}>
-              <Link key={slug} href={`/${slug}`}>
-                <Button as="a" sx={{ alignItems: "center", fontSize: 1 }}>
-                  <Flex sx={{ alignItems: "center" }}>
-                    VIEW ALL <FiArrowRight sx={{ ml: 2 }} />
-                  </Flex>
-                </Button>
-              </Link>
-            </Flex>
+              </Flex>
+            </Box>
           </Box>
         ))}
       </Layout>
