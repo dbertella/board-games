@@ -8,10 +8,20 @@ const defaultOptions = {
   textNodeName: "text",
 };
 
+const MAX_RETRIES = 5;
+
+function timeout(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+async function sleep(fn: Function, delay: number, ...args: any) {
+  await timeout(delay);
+  return fn(...args);
+}
+
 export async function fetchAPI(
   endpoint: string,
   options = defaultOptions,
-  retries: number = 5
+  retries: number = MAX_RETRIES
 ): Promise<any> {
   const headers = {
     // "Content-Type": "application/json"
@@ -28,7 +38,12 @@ export async function fetchAPI(
       return parser.parse(text, options);
     }
     if (retries > 0) {
-      return fetchAPI(endpoint, options, retries - 1);
+      console.log("Retries left: " + retries);
+      console.log("for: " + endpoint);
+      const response = await sleep(() => {
+        fetchAPI(endpoint, options, retries - 1);
+      }, (MAX_RETRIES - retries) * 1000);
+      return response;
     } else {
       throw new Error("No more retries");
     }
