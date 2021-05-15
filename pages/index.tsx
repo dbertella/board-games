@@ -59,9 +59,9 @@ const Index = ({ users, posts }: Props) => {
                 }}
               >
                 <Heading as="h3">Top 5</Heading>
-                <Link key={slug} href={`/${slug}`}>
+                <Link key={slug} href={`/${slug}`} passHref>
                   <UILink>
-                    <Flex sx={{ alignItems: "center", fontSize: 1 }}>
+                    <Flex sx={{ alignItems: "center" }}>
                       view all <FiArrowRight sx={{ ml: 2 }} />
                     </Flex>
                   </UILink>

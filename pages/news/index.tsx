@@ -27,12 +27,12 @@ export const NewsSection = ({ posts }: Props) => (
           date={date}
           author={author}
         />
-        <Text as="p" sx={{ fontSize: 1, mb: 3 }}>
+        <Text as="p" sx={{ mb: 3 }}>
           {excerpt}
         </Text>
-        <Link key={slug} href={`/news/${slug}`}>
+        <Link key={slug} href={`/news/${slug}`} passHref>
           <UILink>
-            <Flex sx={{ alignItems: "center", fontSize: 1 }}>
+            <Flex sx={{ alignItems: "center" }}>
               read more <FiArrowRight sx={{ ml: 2 }} />
             </Flex>
           </UILink>
