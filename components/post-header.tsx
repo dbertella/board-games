@@ -16,7 +16,7 @@ export default function PostHeader({ title, coverImage, date, author }: Props) {
       <PostTitle sx={{ mt: 4 }}>{title}</PostTitle>
       <Box
         sx={{
-          fontSize: 0,
+          fontSize: 2,
           mb: 1,
         }}
       >

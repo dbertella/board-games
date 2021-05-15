@@ -48,7 +48,7 @@ const Index = ({ posts }: Props) => {
       <Head>
         <title>My Boardgames | Daniele Bertella</title>
       </Head>
-      <Intro />
+      <Intro back />
       <NewsSection posts={posts} />
     </Layout>
   );

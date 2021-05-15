@@ -8,7 +8,8 @@ import PostType from "types/post";
 import PostTitle from "components/post-title";
 import PostHeader from "components/post-header";
 import { getAllPosts, getPostBySlug } from "lib/posts";
-import BackButton from "components/post-back";
+import BackToNews from "components/post-back";
+import Intro from "components/intro-component";
 
 type Props = {
   post: PostType;
@@ -32,7 +33,9 @@ const Post = ({ post }: Props) => {
               <title>{post.title} | Daniele Bertella</title>
               <meta property="og:image" content={post.ogImage} />
             </Head>
-            <BackButton />
+            <Intro back>
+              <BackToNews />
+            </Intro>
 
             <PostHeader
               title={post.title}

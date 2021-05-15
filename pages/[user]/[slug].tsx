@@ -19,6 +19,7 @@ import GameRating from "components/game-rating";
 import { Flex, Box, Heading, Link, Image } from "@theme-ui/components";
 import { FiLink } from "react-icons/fi";
 import BackButton from "components/game-back";
+import Intro from "components/intro-component";
 
 type Props = {
   title: string;
@@ -45,7 +46,9 @@ const Post = ({ post, title }: Props) => {
               </title>
               <meta property="og:image" content={post.ogImage} />
             </Head>
-            <BackButton title={title} />
+            <Intro back>
+              <BackButton title={title} />
+            </Intro>
             <Flex
               sx={{
                 flexDirection: ["column", null, "row"],

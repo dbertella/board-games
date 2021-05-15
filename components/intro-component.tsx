@@ -1,17 +1,32 @@
 /** @jsxImportSource theme-ui */
 
-import { Flex, Heading } from "@theme-ui/components";
+import { Flex, Box, Heading, Link as UiLink, Text } from "@theme-ui/components";
 import Link from "next/link";
-import { FiArrowLeft } from "react-icons/fi";
+import { ReactNode } from "react";
+import { FiChevronsRight } from "react-icons/fi";
 
-const Intro = ({ back }: { back?: boolean }) => {
+const Intro = ({
+  back,
+  children,
+}: {
+  back?: boolean;
+  children?: ReactNode;
+}) => {
   return (
-    <Link href="/" passHref>
-      <Flex sx={{ alignItems: "center" }}>
-        {back && <FiArrowLeft size={32} sx={{ mr: 3 }} />}
-        <Heading as="h2">Boardgames.</Heading>
-      </Flex>
-    </Link>
+    <>
+      <Heading as="h2">Boardgames.</Heading>
+      <Box mb={2} />
+      {back && (
+        <Flex sx={{ alignItems: "center", lineHeight: 1, fontSize: 2 }} mb={3}>
+          <Text sx={{ mr: 2 }}>Go to</Text>
+          <FiChevronsRight size={12} />
+          <Link href="/" passHref>
+            <UiLink sx={{ mx: 2 }}>home</UiLink>
+          </Link>
+          {children}
+        </Flex>
+      )}
+    </>
   );
 };
 
