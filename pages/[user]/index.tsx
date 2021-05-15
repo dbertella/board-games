@@ -6,29 +6,30 @@ import { orderBy } from "lodash";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Box, Grid } from "@theme-ui/components";
+import { Box, Grid, Heading } from "@theme-ui/components";
 import Intro from "components/intro-component";
 import { CollectionFilters } from "components/CollectionFilters";
 import Layout from "components/layout";
-import { getAllGamesByUser, getUserBySlug, getUsers } from "lib/games";
+import { getAllGamesByUser } from "lib/games";
+import { getUserBySlug, getUsers } from "lib/users";
 import { BggGameSingle } from "types/bgg";
 import GameType from "types/game";
 
 import { fetchAPI } from "lib/api";
 import { Game } from "components/Game";
-import { Themed } from "@theme-ui/mdx";
+import markdownToHtml from "lib/markdownToHtml";
+import PostBody from "components/post-body";
 type Props = {
   title: string;
+  content: string;
   allGames: GameType[];
 };
 
-const Index = ({ title, allGames }: Props) => {
+const Index = ({ title, content, allGames }: Props) => {
   const router = useRouter();
   const { order, user } = router.query;
   const [nPlayers, setNPlayers] = useState<number>();
   const [playTime, setPlayTime] = useState<number>();
-
-  console.log(allGames);
 
   const filteredGames = useMemo(() => {
     let filtered = allGames;
@@ -62,7 +63,10 @@ const Index = ({ title, allGames }: Props) => {
           <title>My Collection | {title}</title>
         </Head>
         <Intro back />
-        <Themed.h1>{title}</Themed.h1>
+        <Heading as="h1" mt={3} mb={2}>
+          {title}
+        </Heading>
+        <PostBody content={content} />
         <CollectionFilters
           allGames={allGames}
           {...{ nPlayers, setNPlayers, playTime, setPlayTime }}
@@ -129,7 +133,8 @@ export const getStaticProps = async ({ params }: Params) => {
     params.user
   );
 
-  const user = getUserBySlug(params.user, ["title"]);
+  const user = getUserBySlug(params.user, ["title", "content"]);
+  const content = await markdownToHtml(user.content || "");
 
   const ids = allGames.map((g) => g.bggId);
 
@@ -141,6 +146,7 @@ export const getStaticProps = async ({ params }: Params) => {
   return {
     props: {
       title: user.title,
+      content: content,
       allGames: allGames.map((p) => ({
         ...p,
         title: he.decode(

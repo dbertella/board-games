@@ -2,24 +2,29 @@
 
 import Intro from "../components/intro-component";
 import Layout from "../components/layout";
-import { getAllUsers, getNGamesByUser } from "../lib/games";
+import { getNGamesByUser } from "../lib/games";
+import { getAllUsers } from "../lib/users";
 import Head from "next/head";
 import Link from "next/link";
 import UserType from "types/user";
-import { Box, Button, Flex, Heading, Text } from "@theme-ui/components";
+import { Box, Link as UILink, Flex, Heading, Text } from "@theme-ui/components";
 import { FiArrowRight } from "react-icons/fi";
 import { fetchAPI } from "lib/api";
 import { BggGameSingle } from "types/bgg";
 import he from "he";
 import { uniq } from "lodash";
 import GameType from "types/game";
+import PostType from "types/post";
 import { GameSmall } from "components/GameSmall";
+import { getNPosts } from "lib/posts";
+import { NewsSection } from "./news";
 
 type Props = {
   users: (UserType & { games: GameType[] })[];
+  posts: PostType[];
 };
 
-const Index = ({ users }: Props) => {
+const Index = ({ users, posts }: Props) => {
   return (
     <>
       <Layout>
@@ -27,9 +32,13 @@ const Index = ({ users }: Props) => {
           <title>My Boardgames | Daniele Bertella</title>
         </Head>
         <Intro />
+        <NewsSection posts={posts} />
+        <Heading as="h2" sx={{ mt: 3, mb: 2 }}>
+          Collections
+        </Heading>
         {users.map(({ title, slug, excerpt, games }) => (
           <Box sx={{ mb: 5 }} key={slug}>
-            <Heading as="h2" sx={{ mt: 3, mb: 2 }}>
+            <Heading as="h3" sx={{ mt: 3, mb: 2 }}>
               {title}
             </Heading>
             <Text as="p" sx={{ fontSize: 1, mb: 3 }}>
@@ -51,11 +60,11 @@ const Index = ({ users }: Props) => {
               >
                 <Heading as="h3">Top 5</Heading>
                 <Link key={slug} href={`/${slug}`}>
-                  <Button as="a" sx={{ alignItems: "center", fontSize: 1 }}>
-                    <Flex sx={{ alignItems: "center" }}>
-                      VIEW ALL <FiArrowRight sx={{ ml: 2 }} />
+                  <UILink>
+                    <Flex sx={{ alignItems: "center", fontSize: 1 }}>
+                      view all <FiArrowRight sx={{ ml: 2 }} />
                     </Flex>
-                  </Button>
+                  </UILink>
                 </Link>
               </Flex>
               <Flex sx={{ alignItems: "center", overflow: "auto", gap: 3 }}>
@@ -108,8 +117,13 @@ export const getStaticProps = async () => {
     data.items.item.map((g: BggGameSingle) => [g.id, g])
   );
 
+  const posts = getNPosts(
+    ["title", "date", "slug", "author", "coverImage", "excerpt"],
+    5
+  );
   return {
     props: {
+      posts,
       users: userWithGames.map((user) => ({
         ...user,
         games: user.games.map((g) => ({

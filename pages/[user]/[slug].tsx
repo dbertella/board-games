@@ -3,21 +3,22 @@
 import { useRouter } from "next/router";
 import Clamp from "react-clamp-lines";
 import ErrorPage from "next/error";
-import PostBody from "../../components/post-body";
-import Layout from "../../components/layout";
-import { getGameBySlug, getAllGames, getUserBySlug } from "../../lib/games";
+import PostBody from "components/post-body";
+import Layout from "components/layout";
+import { getGameBySlug, getAllGames } from "lib/games";
+import { getUserBySlug } from "lib/users";
 import Head from "next/head";
-import markdownToHtml from "../../lib/markdownToHtml";
-import GameType from "../../types/game";
-import PostTitle from "../../components/post-title";
-import { fetchAPI } from "../../lib/api";
+import markdownToHtml from "lib/markdownToHtml";
+import GameType from "types/game";
+import PostTitle from "components/post-title";
+import { fetchAPI } from "lib/api";
 import he from "he";
-import { Stats } from "../../components/game-stats";
-import GameDate from "../../components/game-date";
-import GameRating from "../../components/game-rating";
+import { Stats } from "components/game-stats";
+import GameDate from "components/game-date";
+import GameRating from "components/game-rating";
 import { Flex, Box, Heading, Link, Image } from "@theme-ui/components";
 import { FiLink } from "react-icons/fi";
-import BackButton from "components/back";
+import BackButton from "components/game-back";
 
 type Props = {
   title: string;

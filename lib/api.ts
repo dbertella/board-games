@@ -13,10 +13,6 @@ const MAX_RETRIES = 5;
 function timeout(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-async function sleep(fn: Function, delay: number, ...args: any) {
-  await timeout(delay);
-  return fn(...args);
-}
 
 export async function fetchAPI(
   endpoint: string,
@@ -39,11 +35,9 @@ export async function fetchAPI(
   if (retries > 0) {
     console.log("Retries left: " + retries);
     console.log("for: " + endpoint);
-    const response = await sleep(() => {
-      fetchAPI(endpoint, options, retries - 1);
-    }, (MAX_RETRIES - retries) * 1000);
-    return response;
+    await timeout((MAX_RETRIES - retries) * 1000);
+    return fetchAPI(endpoint, options, retries - 1);
   } else {
-    throw new Error("No more retries");
+    throw new Error("BGG is not responding and no more retries");
   }
 }

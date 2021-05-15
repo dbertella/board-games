@@ -2,43 +2,10 @@ import fs from "fs";
 import { join } from "path";
 import matter from "gray-matter";
 import { take } from "lodash";
-
-const gamesDirectory = join(process.cwd(), "_users");
-
-export function getUsers() {
-  return fs.readdirSync(gamesDirectory);
-}
-
-export function getUserBySlug(slug: string, fields: string[] = []) {
-  const fullPath = join(gamesDirectory, slug, `_index.md`);
-  const fileContents = fs.readFileSync(fullPath, "utf8");
-  const { data, content } = matter(fileContents);
-
-  type Items = {
-    [key: string]: string;
-  };
-
-  const items: Items = {};
-
-  // Ensure only the minimal needed data is exposed
-  fields.forEach((field) => {
-    if (field === "slug") {
-      items[field] = slug;
-    }
-    if (field === "content") {
-      items[field] = content;
-    }
-
-    if (data[field]) {
-      items[field] = data[field];
-    }
-  });
-
-  return items;
-}
+import { getUsers, userDirectory } from "./users";
 
 export function getGameSlugs(user: string) {
-  return fs.readdirSync(join(gamesDirectory, user));
+  return fs.readdirSync(join(userDirectory, user));
 }
 
 export function getGameBySlug(
@@ -47,7 +14,7 @@ export function getGameBySlug(
   fields: string[] = []
 ) {
   const realSlug = slug.replace(/\.md$/, "");
-  const fullPath = join(gamesDirectory, user, `${realSlug}.md`);
+  const fullPath = join(userDirectory, user, `${realSlug}.md`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
 
@@ -91,11 +58,6 @@ export function getAllGames(fields: string[]) {
       )
       .map((userLists, i) => [users[i], userLists])
   );
-}
-
-export function getAllUsers(fields: string[]) {
-  const users = getUsers();
-  return users.map((slug) => getUserBySlug(slug, fields)).sort();
 }
 
 export function getAllGamesByUser(fields: string[], user: string) {

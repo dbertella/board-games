@@ -9,7 +9,7 @@ const Intro = ({ back }: { back?: boolean }) => {
     <Link href="/" passHref>
       <Flex sx={{ alignItems: "center" }}>
         {back && <FiArrowLeft size={32} sx={{ mr: 3 }} />}
-        <Heading as="h2">Game Collections.</Heading>
+        <Heading as="h2">Boardgames.</Heading>
       </Flex>
     </Link>
   );
