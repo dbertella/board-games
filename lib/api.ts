@@ -32,22 +32,18 @@ export async function fetchAPI(
     headers,
   });
 
-  try {
-    if (res.ok) {
-      const text = await res.text();
-      return parser.parse(text, options);
-    }
-    if (retries > 0) {
-      console.log("Retries left: " + retries);
-      console.log("for: " + endpoint);
-      const response = await sleep(() => {
-        fetchAPI(endpoint, options, retries - 1);
-      }, (MAX_RETRIES - retries) * 1000);
-      return response;
-    } else {
-      throw new Error("No more retries");
-    }
-  } catch (e) {
-    throw new Error(e);
+  if (res.ok) {
+    const text = await res.text();
+    return parser.parse(text, options);
+  }
+  if (retries > 0) {
+    console.log("Retries left: " + retries);
+    console.log("for: " + endpoint);
+    const response = await sleep(() => {
+      fetchAPI(endpoint, options, retries - 1);
+    }, (MAX_RETRIES - retries) * 1000);
+    return response;
+  } else {
+    throw new Error("No more retries");
   }
 }

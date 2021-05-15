@@ -6,7 +6,7 @@ import { getAllUsers, getNGamesByUser } from "../lib/games";
 import Head from "next/head";
 import Link from "next/link";
 import UserType from "types/user";
-import { Box, Button, Flex, Grid, Heading, Text } from "@theme-ui/components";
+import { Box, Button, Flex, Heading, Text } from "@theme-ui/components";
 import { FiArrowRight } from "react-icons/fi";
 import { fetchAPI } from "lib/api";
 import { BggGameSingle } from "types/bgg";
@@ -42,22 +42,14 @@ const Index = ({ users }: Props) => {
                 borderRadius: 15,
               }}
             >
-              <Heading as="h3" sx={{ mb: 3 }}>
-                Top 5
-              </Heading>
-              <Grid
-                columns={["1fr 1fr 1fr", null, "1fr 1fr 1fr 1fr 1fr"]}
-                sx={{ alignItems: "center" }}
+              <Flex
+                sx={{
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mb: 3,
+                }}
               >
-                {games.map((game, i) => (
-                  <Link href={`/${slug}/${game.slug}`} key={game.slug} passHref>
-                    <Box>
-                      <GameSmall {...game} position={++i} />
-                    </Box>
-                  </Link>
-                ))}
-              </Grid>
-              <Flex sx={{ justifyContent: "center" }}>
+                <Heading as="h3">Top 5</Heading>
                 <Link key={slug} href={`/${slug}`}>
                   <Button as="a" sx={{ alignItems: "center", fontSize: 1 }}>
                     <Flex sx={{ alignItems: "center" }}>
@@ -65,6 +57,13 @@ const Index = ({ users }: Props) => {
                     </Flex>
                   </Button>
                 </Link>
+              </Flex>
+              <Flex sx={{ alignItems: "center", overflow: "auto", gap: 3 }}>
+                {games.map((game, i) => (
+                  <Link href={`/${slug}/${game.slug}`} key={game.slug} passHref>
+                    <GameSmall {...game} position={++i} />
+                  </Link>
+                ))}
               </Flex>
             </Box>
           </Box>

@@ -28,6 +28,8 @@ const Index = ({ title, allGames }: Props) => {
   const [nPlayers, setNPlayers] = useState<number>();
   const [playTime, setPlayTime] = useState<number>();
 
+  console.log(allGames);
+
   const filteredGames = useMemo(() => {
     let filtered = allGames;
     if (!!nPlayers) {
