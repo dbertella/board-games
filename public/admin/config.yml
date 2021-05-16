@@ -1,8 +1,10 @@
 backend:
-  name: github
-  repo: dbertella/board-games
+  name: git-gateway
   branch: main # Branch to update (optional; defaults to master)
-  base_url: http://games.danielebertella.com/admin
+  identity_url: "https://condescending-visvesvaraya-a0b270.netlify.app/.netlify/identity"
+  gateway_url: "https://condescending-visvesvaraya-a0b270.netlify.app/.netlify/git"
+
+local_backend: true
 media_folder: public/img
 public_folder: img
 collections:
