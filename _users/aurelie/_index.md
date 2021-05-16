@@ -4,4 +4,4 @@ excerpt: "I love Boardgames (sometimes)"
 hot: []
 ---
 
-My name is Aurelie and I love Boardgames
+I prefer party games and game with words, over heavy strategy (complex) games.

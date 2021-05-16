@@ -2,6 +2,7 @@ import { Box, Flex, Image, Text, Link as UILink } from "theme-ui";
 import dayjs from "dayjs";
 import PostTitle from "./post-title";
 import Link from "next/link";
+import { startCase } from "lodash";
 
 type Props = {
   title: string;
@@ -25,7 +26,7 @@ export default function PostHeader({ title, coverImage, date, author }: Props) {
           <time dateTime={date}>{dayjs(date).format("D MMMM YYYY")}</time>
           <Text mx={2}>-</Text>
           <Link href={`/${author}`}>
-            <UILink>{author}</UILink>
+            <UILink>{startCase(author)}</UILink>
           </Link>
         </Flex>
       </Box>
