@@ -30,6 +30,7 @@ const Index = ({ users, posts }: Props) => {
       <Layout>
         <Head>
           <title>My Boardgames | Daniele Bertella</title>
+          <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         </Head>
         <Intro />
         <NewsSection posts={posts} />

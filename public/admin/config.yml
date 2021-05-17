@@ -1,28 +1,62 @@
 backend:
-  name: git-gateway
+  name: git-gateway # test-repo
   branch: main # Branch to update (optional; defaults to master)
-  identity_url: "https://condescending-visvesvaraya-a0b270.netlify.app/.netlify/identity"
-  gateway_url: "https://condescending-visvesvaraya-a0b270.netlify.app/.netlify/git"
-
 local_backend: true
 media_folder: public/img
 public_folder: img
 collections:
-  - name: "users"
-    label: "Users"
-    slug: "{{slug}}"
-    identifier_field: slug
-    files:
-      - label: "User"
-        name: "daniele"
-        file: "_users/{{slug}}/_index.md"
-        fields:
-          - { label: "Title", name: "title", widget: "string" }
-          - { label: "Publish Date", name: "date", widget: "datetime" }
-          - { label: "Body", name: "body", widget: "markdown" }
-          - label: "Hot"
-            name: "hot"
-            widget: list
-            fields:
-              - { label: "Name", name: "name", widget: "string" }
-              - { label: "Description", name: "description", widget: "text" }
+  - name: user
+    label: Users
+    label_singular: "User"
+    folder: _users
+    path: "{{slug}}/_index"
+    media_folder: ""
+    public_folder: ""
+    create: true
+    fields:
+      - label: Title
+        name: title
+        widget: string
+      # - label: "Cover Image"
+      #   name: "image"
+      #   widget: "image"
+  # - name: "users"
+  #   label: "Users"
+  #   create: true
+  #   slug: "{{slug}}"
+  #   identifier_field: slug
+  #   files:
+  #     - label: "User"
+  #       name: "user"
+  #       folder: "_users"
+  #       path: "{{slug}}/_index"
+  #       fields:
+  #         - { label: "Title", name: "title", widget: "string" }
+  #         - { label: "Publish Date", name: "date", widget: "datetime" }
+  #         - { label: "Body", name: "body", widget: "markdown" }
+  #         - label: "Hot"
+  #           name: "hot"
+  #           widget: list
+  #           fields:
+  #             - { label: "Name", name: "name", widget: "string" }
+  #             - { label: "Description", name: "description", widget: "text" }
+  # - name: "games"
+  #   label: "Games"
+  #   create: true
+  #   slug: "{{slug}}"
+  #   identifier_field: slug
+  #   files:
+  #     - label: "Game"
+  #       name: "game"
+  #       folder: "_users"
+  #       path: "{{dirname}}/{{slug}}"
+  #       fields:
+  #         - { label: "Title", name: "title", widget: "string" }
+  #         - { label: "Publish Date", name: "date", widget: "datetime" }
+  #         - { label: "Body", name: "body", widget: "markdown" }
+  #         - label: "Hot"
+  #           name: "hot"
+  #           widget: list
+  #           fields:
+  #             - { label: "Name", name: "name", widget: "string" }
+  #             - { label: "Description", name: "description", widget: "text" }
