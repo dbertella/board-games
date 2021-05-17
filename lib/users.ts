@@ -9,7 +9,7 @@ export function getUsers() {
 }
 
 export function getUserBySlug(slug: string, fields: string[] = []) {
-  const fullPath = join(userDirectory, slug, `_index.md`);
+  const fullPath = join(userDirectory, slug, "author", `index.md`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
 

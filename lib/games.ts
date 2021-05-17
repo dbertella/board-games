@@ -50,7 +50,7 @@ export function getAllGames(fields: string[]) {
     users
       .map((user) =>
         getGameSlugs(user)
-          .filter((slug) => !slug.startsWith("_index"))
+          .filter((slug) => !slug.startsWith("author"))
           .map((slug) => getGameBySlug(slug, user, fields))
           .sort((game1, game2) =>
             Number(game1.rating) > Number(game2.rating) ? 1 : -1

@@ -5,11 +5,11 @@ local_backend: true
 media_folder: public/img
 public_folder: img
 collections:
-  - name: user
-    label: Users
-    label_singular: "User"
-    folder: _users
-    path: "{{slug}}/_index"
+  - name: news
+    label: News
+    label_singular: "News"
+    folder: _posts
+    slug: "{{slug}}"
     media_folder: ""
     public_folder: ""
     create: true
@@ -17,46 +17,50 @@ collections:
       - label: Title
         name: title
         widget: string
-      # - label: "Cover Image"
-      #   name: "image"
-      #   widget: "image"
-  # - name: "users"
-  #   label: "Users"
-  #   create: true
-  #   slug: "{{slug}}"
-  #   identifier_field: slug
-  #   files:
-  #     - label: "User"
-  #       name: "user"
-  #       folder: "_users"
-  #       path: "{{slug}}/_index"
-  #       fields:
-  #         - { label: "Title", name: "title", widget: "string" }
-  #         - { label: "Publish Date", name: "date", widget: "datetime" }
-  #         - { label: "Body", name: "body", widget: "markdown" }
-  #         - label: "Hot"
-  #           name: "hot"
-  #           widget: list
-  #           fields:
-  #             - { label: "Name", name: "name", widget: "string" }
-  #             - { label: "Description", name: "description", widget: "text" }
-  # - name: "games"
-  #   label: "Games"
-  #   create: true
-  #   slug: "{{slug}}"
-  #   identifier_field: slug
-  #   files:
-  #     - label: "Game"
-  #       name: "game"
-  #       folder: "_users"
-  #       path: "{{dirname}}/{{slug}}"
-  #       fields:
-  #         - { label: "Title", name: "title", widget: "string" }
-  #         - { label: "Publish Date", name: "date", widget: "datetime" }
-  #         - { label: "Body", name: "body", widget: "markdown" }
-  #         - label: "Hot"
-  #           name: "hot"
-  #           widget: list
-  #           fields:
-  #             - { label: "Name", name: "name", widget: "string" }
-  #             - { label: "Description", name: "description", widget: "text" }
+      - label: Excerpt
+        name: excerpt
+        widget: string
+      - label: Author
+        name: author
+        widget: string
+      - label: Date
+        name: date
+        widget: date
+      - { label: "Body", name: "body", widget: "markdown" }
+  - name: daniele
+    label: Den
+    label_singular: "Game"
+    folder: _users/daniele
+    slug: "{{slug}}"
+    media_folder: ""
+    public_folder: ""
+    create: true
+    fields:
+      - label: Title
+        name: title
+        widget: string
+  - name: aurelie
+    label: Aure
+    label_singular: "Game"
+    folder: _users/aurelie
+    slug: "{{slug}}"
+    media_folder: ""
+    public_folder: ""
+    create: true
+    fields:
+      - label: Slug
+        name: slug
+        widget: string
+      - label: Excerpt
+        name: excerpt
+        widget: string
+      - label: BGG ID
+        name: bggId
+        widget: string
+      - label: Rating
+        name: rating
+        widget: string
+      - label: Purchased Date
+        name: date
+        widget: date
+      - { label: "Body", name: "body", widget: "markdown" }
